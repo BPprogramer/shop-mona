@@ -69,8 +69,8 @@
                 <input type="nombre" name="nombre"  class="form-control" id="nombre" placeholder="Tu nombre">
               </div>
               <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" name="email" class="form-control" id="email" placeholder="Enter email">
+                <label for="email">Usuario</label>
+                <input type="email" name="email" class="form-control" id="email" placeholder="Usuario">
               </div>
               <div class="form-row">
 

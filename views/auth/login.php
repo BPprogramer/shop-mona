@@ -11,7 +11,7 @@
       <form id="loginForm">
         
         <div class="form-group input-group mb-3">
-            <input type="email" class="form-control" name="email" id="email" placeholder="Correo">
+            <input type="email" class="form-control" name="email" id="email" placeholder="Usuario">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-envelope"></span>

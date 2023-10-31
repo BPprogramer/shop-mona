@@ -305,8 +305,7 @@
                     required: true
                 },
                 email: {
-                  required: true,
-                  email: true
+                  required: true
                 },
                 estado:{
                     required: true,
@@ -324,8 +323,7 @@
                     required: "El nombre es obligatorio"
                 },
                 email: {
-                  required: "El email es obligatorio",
-                  email: "El email no es válido"
+                  required: "El Usuario es obligatorio"
                 },
                 estado:{
                     required: 'el estado es obligatorio',
