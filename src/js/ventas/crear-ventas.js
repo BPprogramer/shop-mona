@@ -364,9 +364,10 @@
 
                   
 
-                    guardarVentaBtn.disabled = false;
+                
                     resetearVentaAnterior();
                 }
+                guardarVentaBtn.disabled = false;
                   setTimeout(()=>{
                         eliminarToastAnterior();
                     },8000)
