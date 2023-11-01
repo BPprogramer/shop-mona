@@ -236,12 +236,12 @@
                     minlength: 6   
                 },
                 cedula: {
-                    required: true,
+                 
                     digits:true,
                     minlength: 6   
                 },
                 celular: {
-                    required: true,
+                
                     digits:true,
                     rangelength: [10, 10]   
                 },
@@ -256,12 +256,12 @@
                     minlength: "Debe tener al menos 6 caracteres"   
                 },
                 cedula: {
-                    required: "El númer de cédula es obligaotrio",
+                 
                     digits: "Solo valores númericos",
                     minlength:  "Debe tener al menos 6 numeros",
                 },
                 celular: {
-                    required: "El número de celular es obligatorio",
+                 
                     digits:"solo valores numericos",
                     rangelength: "Debe contener 10 números" 
                 },

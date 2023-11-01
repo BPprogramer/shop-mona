@@ -259,10 +259,10 @@
               rules: {
                 nombre: {
                     required: true,
-                    minlength: 6   
+                    minlength: 2  
                 },
                 celular: {
-                    required: true,
+             
                     digits:true,
                     rangelength: [10, 10]   
                 },
@@ -274,10 +274,10 @@
               messages: {
                 nombre: {
                     required: "El nombre es obligatorio",
-                    minlength: "Debe tener al menos 6 caracteres"   
+                    minlength: "Debe tener al menos 2 caracteres"   
                 },
                 celular: {
-                    required: "El número de celular es obligatorio",
+            
                     digits: "Solo valores númericos",
                     rangelength:  "el número de celular debe tener 10 digitos"
                 },
