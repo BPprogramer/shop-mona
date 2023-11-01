@@ -3,7 +3,7 @@
 namespace Model;
 
 class  Cuota extends ActiveRecord {
-    protected static $tabla = 'pago_cuotas';
+    protected static $tabla = 'cuotas';
     protected static $columnasDB = ['id', 'monto', 'saldo','fecha_pago', 'caja_id'];
 
 

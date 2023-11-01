@@ -84,7 +84,17 @@ class ApiVentas
         }
         $venta = Venta::find($id);
         $productos = ProductosVenta::whereArrayJoin(['productos_venta.venta_id'=>$venta->id], 'productos', 'id','producto_id');
-     
+        if($venta->metodo_pago ==2){
+            $pago_cuotas = PagoCuota::where('venta_id', $venta->id);
+          
+            if(!$pago_cuotas){
+                echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
+                return;
+            }
+       
+            echo json_encode(  ['productos_venta'=>$productos, 'venta'=>$venta, 'cliente_id'=>$pago_cuotas->cliente_id]);
+            return;
+        }
         echo json_encode(  ['productos_venta'=>$productos, 'venta'=>$venta]);
         
     }
@@ -144,20 +154,23 @@ class ApiVentas
               
             }
 
-            // if($venta->metodo_pago ==2){
-            //     $cuota = new Cuota();
-            //     $cuota->monto = $venta->recaudo;
-            //     $cuota->saldo = $venta->total- $venta->recaudo;
-            //     $cuota->fecha_pago = $venta->fecha;
-            //     $cuota->caja_id = $caja->id;
-            //     $resultado_cuota = $cuota->guardar();
-            //     $pago_cuotas = new PagoCuota();
-            //     $pago_cuotas->venta_id = $resultado['id'];
-            //     $pago_cuotas->cuota_id = $resultado_cuota['id'];
-            //     $pago_cuotas->$_POST['cliente_id'];
-            //     $pago_cuotas->guardar();
+            if($venta->metodo_pago == 2){
+             
+                $cuota = new Cuota();
+                $cuota->monto = $venta->recaudo;
+                $cuota->saldo = $venta->total- $venta->recaudo;
+                $cuota->fecha_pago = $venta->fecha;
+                $cuota->caja_id = $caja->id;
+            
+                $resultado_cuota = $cuota->guardar();
+          
+                $pago_cuotas = new PagoCuota();
+                $pago_cuotas->venta_id = $resultado['id'];
+                $pago_cuotas->cuota_id = $resultado_cuota['id'];
+                $pago_cuotas->cliente_id = $_POST['cliente_id'];
+                $pago_cuotas->guardar();
 
-            // }
+            }
             $db->commit();
             echo json_encode(['type' => 'success', 'msg' => 'Venta guardada con Exito']);
             return;
@@ -225,7 +238,7 @@ class ApiVentas
             $venta->vendedor_id = $_SESSION['id'];
             $venta->codigo = $venta_actual->codigo;
             $venta->caja_id = $venta_actual->caja_id;
-     
+            $venta->formatearDatosFloat();
             $venta->guardar();
        
 
@@ -242,10 +255,42 @@ class ApiVentas
 
                 $productos_venta->guardar();
             }
+
+            
+      
+            if($venta_actual->metodo_pago ==2){
+                $pago_cuotas_actual = PagoCuota::where('venta_id', $venta->id);
+                $cuota_actual = Cuota::find($pago_cuotas_actual->cuota_id);
+      
+                $pago_cuotas_actual->eliminar();
+               $cuota_actual->eliminar();
+           
+            }
+
+            if($venta->metodo_pago == 2){
+               
+
+                $cuota = new Cuota();
+                $cuota->monto = $venta->recaudo;
+                $cuota->saldo = $venta->total- $venta->recaudo;
+                $cuota->fecha_pago = $venta->fecha;
+                $cuota->caja_id = $venta->caja_id;
+      
+            
+                $resultado_cuota = $cuota->guardar();
+          
+                $pago_cuotas = new PagoCuota();
+                $pago_cuotas->venta_id = $venta->id;
+                $pago_cuotas->cuota_id = $resultado_cuota['id'];
+                $pago_cuotas->cliente_id = $_POST['cliente_id'];
+                $pago_cuotas->guardar();
+
+            }
             $db->commit();
             echo json_encode(['type' => 'success', 'msg' => 'Venta guardada con Exito']);
             return;
         } catch (Exception $e) {
+            debuguear($e);
             $db->rollback();
             echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
             return;
@@ -295,7 +340,15 @@ class ApiVentas
             $productos_venta = new ProductosVenta();
             $productos_venta->eliminarWhere('venta_id', $id);
      
-
+            
+            if($venta->metodo_pago ==2){
+                $pago_cuotas_actual = PagoCuota::where('venta_id', $venta->id);
+                $cuota_actual = Cuota::find($pago_cuotas_actual->cuota_id);
+      
+                $pago_cuotas_actual->eliminar();
+               $cuota_actual->eliminar();
+           
+            }
      
             $venta->eliminar();
        

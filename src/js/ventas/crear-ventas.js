@@ -100,7 +100,7 @@
                 pagoContado.classList.add('d-none');
                 
             } else {
-                
+                clienteId = null;
                 nombreCliente.readOnly = false;
                 cedulaCliente.readOnly = false;
                 celularCliente.readOnly = false;
@@ -191,7 +191,8 @@
             }
         }
         function llenarInformacion(resultado){
-            //aqui lleno el id del cliente al editar un venta
+            clienteId = resultado.cliente_id;
+         
             const productosVenta = resultado.productos_venta
             const venta = resultado.venta;
             codigoVenta.value = venta.codigo;
@@ -228,7 +229,7 @@
             
             totalInput.value = total_sin_descuento.toLocaleString('en');
             descuentoInput.value = resultado.venta.descuento+"%";
-            totalPagarInput.value = parseFloat(resultado.venta.recaudo).toLocaleString('en');
+            totalPagarInput.value = parseFloat(resultado.venta.total).toLocaleString('en');
            
             if(venta.nombre_cliente!='' || venta.cedula_cliente!='' || venta.celular_cliente!='' || venta.direccion_cliente!=''  || venta.nombre!=undefined  ){
                 contenedorCliente.classList.remove('d-none');
@@ -242,7 +243,7 @@
             if(venta.metodo_pago == 2){
                 var optionToSelect = document.querySelector('#metodo_pago option[value="2"]');
                 optionToSelect.selected = true;
-                abono.value = (venta.recaudo).toLocaleString('en');
+                abono.value = (parseFloat(venta.recaudo)).toLocaleString('en');
                 saldo.value = (venta.total-venta.recaudo).toLocaleString('en'); 
                 pagoContado.classList.add('d-none');
                 pagoCuotas.classList.remove('d-none');
@@ -414,9 +415,21 @@
        
             cantidadPagar.value = '';
             cantidadCambio.value = '';
+            abono.value = '';
+            saldo.value ='';
             if (!contenedorCliente.classList.contains('d-none')) {
                 contenedorCliente.classList.add('d-none');
             }
+            const pagoContado = document.querySelector('#pago-contado');
+            const pagoCuotas = document.querySelector('#pago-cuotas');
+            if(!pagoCuotas.classList.contains('d-none')){
+                pagoCuotas.classList.add('d-none');
+            }
+            if(pagoContado.classList.contains('d-none')){
+           
+                pagoContado.classList.remove('d-none');
+            }
+           
       
             cargarCodigoVenta();
             resetearCliente();
@@ -920,10 +933,10 @@
                     opcion.value = cliente.id;
                     opcion.textContent = cliente.nombre;
                     
-                    // if(cliente.id == idCliente){
+                    if(cliente.id == clienteId){
                
-                    //     opcion.selected = true;
-                    // }
+                        opcion.selected = true;
+                    }
                    
                     selectClientes.appendChild(opcion)
             
@@ -933,6 +946,7 @@
                 $('.select2bs4').select2({
                     theme: 'bootstrap4'
                 })
+                consultarInfoCliente(clienteId);
             } catch (error) {
                 
             }
