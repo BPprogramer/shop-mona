@@ -7,6 +7,8 @@ namespace Controllers;
 use Exception;
 use Model\Caja;
 use Model\Cliente;
+use Model\Cuota;
+use Model\PagoCuota;
 use Model\Producto;
 use Model\ProductosVenta;
 use Model\Venta;
@@ -125,9 +127,7 @@ class ApiVentas
 
         try {
             $resultado = $venta->guardar();
-            if(isset($_POST['cliente_id'])){
-                
-            }
+            
             $caja->guardar();
           
             $productos = json_decode($_POST['productosArray']);
@@ -143,6 +143,21 @@ class ApiVentas
                 $productos_venta->guardar();
               
             }
+
+            // if($venta->metodo_pago ==2){
+            //     $cuota = new Cuota();
+            //     $cuota->monto = $venta->recaudo;
+            //     $cuota->saldo = $venta->total- $venta->recaudo;
+            //     $cuota->fecha_pago = $venta->fecha;
+            //     $cuota->caja_id = $caja->id;
+            //     $resultado_cuota = $cuota->guardar();
+            //     $pago_cuotas = new PagoCuota();
+            //     $pago_cuotas->venta_id = $resultado['id'];
+            //     $pago_cuotas->cuota_id = $resultado_cuota['id'];
+            //     $pago_cuotas->$_POST['cliente_id'];
+            //     $pago_cuotas->guardar();
+
+            // }
             $db->commit();
             echo json_encode(['type' => 'success', 'msg' => 'Venta guardada con Exito']);
             return;

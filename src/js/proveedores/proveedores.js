@@ -265,10 +265,8 @@
              
                     digits:true,
                     rangelength: [10, 10]   
-                },
-                direccion:{
-                    required:true
                 }
+              
 
               },
               messages: {
@@ -280,11 +278,8 @@
             
                     digits: "Solo valores númericos",
                     rangelength:  "el número de celular debe tener 10 digitos"
-                },
-                direccion: {
-                    required: "La dirección es Requerida"
-                 
                 }
+              
               },
               errorElement: 'span',
               errorPlacement: function (error, element) {
