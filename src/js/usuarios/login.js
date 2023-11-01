@@ -57,8 +57,7 @@
               rules: {
                
                 email: {
-                  required: true,
-                  email: true
+                  required: true
                 },
                 password:{
                     required: true,
@@ -67,8 +66,7 @@
               messages: {
                
                 email: {
-                  required: "El email es obligatorio",
-                  email: "El email no es válido"
+                  required: "El usuario es obligatorio"
                 },
                 password: {
                     required: "El password es obligatorio",

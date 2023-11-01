@@ -45,10 +45,17 @@ class  Venta extends ActiveRecord {
         $this->email_cliente = $args['email_cliente'] ?? '';
 
         $this->caja_id = $args['caja_id'] ?? '';
-
-
       
     }
+
+    public function formatearDatosFloat(){
+      
+        $this->recaudo = floatval(str_replace(',','',$this->recaudo));
+
+     
+     
+    }
+
 
 
 }

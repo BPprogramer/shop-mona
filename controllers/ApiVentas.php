@@ -105,6 +105,7 @@ class ApiVentas
 
         $venta = new Venta();
         $venta->sincronizar($_POST);
+        $venta->formatearDatosFloat();
         $venta->caja_id = $caja->id ;
 
         $venta->fecha = date('Y-m-d H:i:s');

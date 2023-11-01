@@ -3,6 +3,7 @@
     const seccionCrearVentas = document.querySelector('#seccion-crear-ventas')
     if (seccionCrearVentas) {
         let ventaId;
+        let clienteId = null;
         let productoObj = {
             id: '',
             nombre: '',
@@ -28,6 +29,8 @@
         let granTotal = 0;
   
 
+  
+        const selectClientes = document.querySelector('#selectClientes');
         const guardarVentaBtn = document.querySelector('#guardar-venta');
         
  
@@ -62,7 +65,7 @@
         const codigoVenta = document.querySelector('#codigo-venta');
 
         leerDatosUrl();
-    
+       
        
 
         guardarVentaBtn.addEventListener('click', function(){
@@ -168,10 +171,12 @@
             if(params.size==1){
                 ventaId = atob(params.get('id'));
                 consultarVenta();
+                consultarCLientes();
                 
                 
             }else{
                 cargarCodigoVenta()
+                consultarCLientes();
             }
             
         }
@@ -186,7 +191,7 @@
             }
         }
         function llenarInformacion(resultado){
-         
+            //aqui lleno el id del cliente al editar un venta
             const productosVenta = resultado.productos_venta
             const venta = resultado.venta;
             codigoVenta.value = venta.codigo;
@@ -233,7 +238,17 @@
                 direccionCliente.value = venta.direccion_cliente;
                 emailCliente.value = venta.email_cliente;
             }
-            
+         
+            if(venta.metodo_pago == 2){
+                var optionToSelect = document.querySelector('#metodo_pago option[value="2"]');
+                optionToSelect.selected = true;
+                abono.value = (venta.recaudo).toLocaleString('en');
+                saldo.value = (venta.total-venta.recaudo).toLocaleString('en'); 
+                pagoContado.classList.add('d-none');
+                pagoCuotas.classList.remove('d-none');
+
+        
+            }            
         }
     
         function revisarVenta(){
@@ -261,6 +276,7 @@
              
                
             }
+            
 
             enviarInformacion();
           
@@ -324,7 +340,7 @@
                     body:datos
                 });
                 const resultado = await respuesta.json();
-                console.log(resultado);
+             
                 // return;
                 eliminarToastAnterior();
               
@@ -405,6 +421,7 @@
             cargarCodigoVenta();
             resetearCliente();
             mostrarProductos();
+          
         }
 
 
@@ -670,6 +687,7 @@
                 resetarInputsMetodoPago();
 
 
+
             });
 
             calcularTotal();
@@ -677,6 +695,7 @@
         }
 
         function resetarInputsMetodoPago() {
+         
             cantidadPagar.value = '';
             cantidadCambio.value = '';
             abono.value = '';
@@ -879,6 +898,51 @@
                 document.querySelector('#toastsContainerTopRight').remove()
             }
         }
+        async function consultarCLientes(){
+            limpiarHtml(selectClientes);
+            
+            try {
+                const respuesta = await fetch(`${location.origin}/api/clientes-ventas`);
+                const resultado =  await respuesta.json();
+               
+                // llenarPrimerOption(selectCategorias);
+                const opcionDisabled =   document.createElement('OPTION');
+                opcionDisabled.textContent = '--seleccione un cliente--';
+                opcionDisabled.value = "0";
+
+                selectClientes.appendChild(opcionDisabled);
+               
+        
+                
+                resultado.forEach(cliente => {
+                    
+                    const opcion =   document.createElement('OPTION');
+                    opcion.value = cliente.id;
+                    opcion.textContent = cliente.nombre;
+                    
+                    // if(cliente.id == idCliente){
+               
+                    //     opcion.selected = true;
+                    // }
+                   
+                    selectClientes.appendChild(opcion)
+            
+                });
+         
+                $('#selectClientes').select2()
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                })
+            } catch (error) {
+                
+            }
+            $('#selectProductos').select2()
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+        
+       
+        }  
     }
 })();
 
