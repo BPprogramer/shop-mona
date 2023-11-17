@@ -2,8 +2,9 @@
     namespace Controllers;
 
 use Model\Caja;
-use Model\Usuario;
+use Model\Cuota;
 use Model\Venta;
+use Model\Usuario;
 
     class ApiCajas {
         public static function cajas(){
@@ -167,8 +168,20 @@ use Model\Venta;
 
             $ventas = Venta::whereArray(['caja_id'=>$caja->id]);
             $total_ventas  = 0;
-            foreach($ventas as $venta){
-                $total_ventas = $total_ventas + $venta->recaudo;
+            if($ventas){
+                foreach($ventas as $venta){
+                    if($venta->metodo_pago==1){
+                        $total_ventas = $total_ventas + $venta->total;
+                    }
+                 
+                }
+            }
+           
+            $cuotas = Cuota::whereArray(['caja_id'=>$caja->id]);
+            if($cuotas){
+                foreach($cuotas as $cuota){
+                    $total_ventas = $total_ventas + $cuota->monto;
+                }  
             }
 
             $caja->recaudo_ventas = $total_ventas;
