@@ -105,6 +105,7 @@ $router->get('/ventas',[VentasController::class, 'index']);
 $router->get('/api/ventas',[ApiVentas::class, 'ventas']);
 $router->get('/api/venta',[ApiVentas::class, 'venta']);
 $router->post('/api/crear-venta',[ApiVentas::class, 'crear']);
+$router->post('/api/revisar-venta',[ApiVentas::class, 'revisarPagosAsociados']);
 $router->post('/api/editar-venta',[ApiVentas::class, 'editar']);
 $router->post('/api/venta/eliminar',[ApiVentas::class, 'eliminar']);
 $router->get('/api/productos-ventas',[ApiVentas::class, 'productos']);
@@ -128,6 +129,7 @@ $router->get('/api/pagos-cuotas',[ApiFiados::class, 'pagosCuotas']);
 
 $router->get('/api/productos-fiados',[ApiFiados::class, 'productosFiados']);
 $router->post('/api/pagar',[ApiFiados::class, 'pagar']);
+$router->post('/api/eliminar-pago',[ApiFiados::class, 'eliminarPago']);
 
 
 $router->comprobarRutas();

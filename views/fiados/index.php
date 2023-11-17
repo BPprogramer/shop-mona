@@ -109,7 +109,7 @@
                             </tr>
                         </thead>
                         <tbody id="body-pagos">
-                            <tr>
+                         <!--    <tr>
                                 <td>1001</td>
                                 <td>50,000</td>
 
@@ -127,7 +127,7 @@
 
                                     </div>
                                 </td>
-                            </tr>
+                            </tr> -->
                         </tbody>
                     </table>
                 </div>

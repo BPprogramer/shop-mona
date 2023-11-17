@@ -199,6 +199,37 @@ class ApiVentas
 
     }
 
+    //antes de editar revisamos que no hayan pagos asociados de lo contrario no se podra editar la venta
+
+
+    public static function revisarPagosAsociados(){
+        if(!is_admin()){
+            echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
+            return;
+        } 
+        
+        $id = $_POST['id'];
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+        if(!$id){
+       
+            echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
+            return;
+        }
+        $fiados_asociados = PagoCuota::where('venta_id', $id);
+        if(!$fiados_asociados){
+            echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
+            return;
+        }
+
+        $pagos_asociados = Cuota::whereArray(['pago_cuotas_id'=>$fiados_asociados->id]);
+        if(count($pagos_asociados)>0){
+            echo json_encode(['type'=>'error', 'msg'=>'Tiene pagos asociados por lo que no puede editar la venta']);
+            return;
+        }
+        echo json_encode(['type'=>'success', 'msg'=>'redireccionando']);
+        return;
+    }
+
     public static function editar(){
         session_start();
         date_default_timezone_set('America/Bogota');
@@ -337,6 +368,8 @@ class ApiVentas
 
     }
 
+
+
     public static function eliminar(){
         session_start();
         date_default_timezone_set('America/Bogota');
@@ -357,6 +390,24 @@ class ApiVentas
             echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
             return;
         }
+
+        //consultamos pagos asociasdos a la venta que se quiere eliminar
+        //si existen pagos no debe dejar eliminar
+        $fiados_asociados = PagoCuota::where('venta_id', $venta->id);
+        if(!$fiados_asociados){
+            echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
+            return;
+        }
+
+        $pagos_asociados = Cuota::whereArray(['pago_cuotas_id'=>$fiados_asociados->id]);
+        if(count($pagos_asociados)>0){
+            echo json_encode(['type'=>'error', 'msg'=>'Tiene pagos asociados por lo que no puede eliminar la venta']);
+            return;
+        }
+        
+
+
+
         $db = Venta::getDB();
      
         // $productosVenta = new ProductosVenta();
@@ -381,10 +432,10 @@ class ApiVentas
             
             if($venta->metodo_pago ==2){
                 $pago_cuotas_actual = PagoCuota::where('venta_id', $venta->id);
-                $cuota_actual = Cuota::find($pago_cuotas_actual->cuota_id);
+                //$cuota_actual = Cuota::find($pago_cuotas_actual->cuota_id);
       
                 $pago_cuotas_actual->eliminar();
-               $cuota_actual->eliminar();
+            //    $cuota_actual->eliminar();
            
             }
      

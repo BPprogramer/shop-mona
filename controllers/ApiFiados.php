@@ -62,6 +62,58 @@ use Model\ProductosVenta;
             
         }
 
+        public static function eliminarPago(){
+            if(!is_admin()){
+                echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
+                return;
+            } 
+            $numero_pago = filter_var($_POST['numero_pago'], FILTER_VALIDATE_INT);
+         
+            if(!$numero_pago){
+                echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
+                return;
+            }
+
+            $cuota = Cuota::where('numero_pago', $numero_pago);
+            $caja = Caja::where('id', $cuota->caja_id);
+            if(!$caja){
+                echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
+                return;
+            }
+            if($caja->estado==1){
+                echo json_encode(['type'=>'error', 'msg'=>'la caja asociada a este pago ya ha sido cerrada']);
+                return;
+            }
+            $pago_cuotas = PagoCuota::find($cuota->pago_cuotas_id);
+            $venta  = Venta::find($pago_cuotas->venta_id);
+
+            $venta->recaudo = $venta->recaudo - $cuota->monto;
+            $venta->estado = 0;
+
+            $db = Venta::getDB();
+            $db->begin_transaction();
+            
+
+            try {
+                $venta->guardar();
+                $cuota->eliminar();
+               
+                $db->commit();
+                echo json_encode(['type' => 'success', 'msg' => 'Pago eliminado exitosamente']);
+                return;
+            } catch (Exception $e) {
+                debuguear($e);
+                $db->rollback();
+                echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
+                return;
+            }
+
+
+            echo json_encode( $venta);
+          
+
+        }
+
         public static function pagar(){
             if(!is_admin()){
                 echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
@@ -159,9 +211,10 @@ use Model\ProductosVenta;
                             $cuota->monto = $pago;
                         }
     
-                        
+                        $caja->numero_transacciones = $caja->numero_transacciones + 1;
                         $venta->guardar();
                         $cuota->guardar();
+                        $caja->guardar();
                     }
                  
                     

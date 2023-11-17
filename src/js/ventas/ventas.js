@@ -5,15 +5,52 @@
 
         $('#tabla').on('click', '#editar', function(e){
             id=e.currentTarget.dataset.ventaId;
-            const idString = id.toString();
+          
 
-            window.location = `/crear-venta?id=${btoa(idString)}`;
+            revisarPagosAsociados(id);
+
+           
             // accionesModal();
         })
         $('#tabla').on('click', '#eliminar', function(e){
             const ventaId = e.currentTarget.dataset.ventaId;
             alertaEliminarProducto(ventaId,e);
         })
+    
+
+        async function revisarPagosAsociados(id){
+            const datos = new FormData();
+            datos.append('id', id);
+            const url = `${location.origin}/api/revisar-venta`;
+            try {
+                const respuesta = await fetch(url,{
+                    method:'POST',
+                    body:datos
+                 })
+                 const resultado = await respuesta.json();
+                 eliminarToastAnterior();
+               
+                 if(resultado.type=='error'){
+                     $(document).Toasts('create', {
+                         class: 'bg-danger',
+                         title: 'Error',
+                      
+                         body: resultado.msg
+                       })
+                 }else{
+              
+                    const idString = id.toString();
+                    window.location = `/crear-venta?id=${btoa(idString)}`;
+                     
+                 }
+
+                 setTimeout(()=>{
+                    eliminarToastAnterior();
+                 },8000)
+            } catch (error) {
+                
+            }
+        }
 
         function alertaEliminarProducto(id, e){
   
@@ -47,7 +84,7 @@
                     method: 'POST'
                 })
                 const resultado = await respuesta.json();
-                console.log(resultado);
+            
          
                 
                 eliminarToastAnterior();
