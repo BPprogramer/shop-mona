@@ -73,6 +73,14 @@
               
             </ul>
           </li>
+          <li class="nav-item">
+            <a href="/fiados" class="nav-link <?php echo pagina_actual('/fiados') ? 'active':''?>">
+            <i class="nav-icon fas fa-hand-holding-usd"></i>
+              <p>
+                Fiados
+              </p>
+            </a>
+          </li>
 
           <li class="nav-item">
             <a href="/productos" class="nav-link <?php echo pagina_actual('/productos') ? 'active':''?>">

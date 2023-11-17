@@ -1,0 +1,12 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+
+.nav-tabs .active-nav{
+    color:  #3c8dbc !important;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+.color-texto{
+    color:#495057  !important;
+}

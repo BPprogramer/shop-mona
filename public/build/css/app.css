@@ -18,6 +18,10 @@ a.nav-link.active {
   max-width: 50rem !important;
 }
 
+.modal-70rem {
+  max-width: 50rem !important;
+}
+
 .select2-container .select2-selection--single {
   height: 38px !important;
   border: 1px solid #ced4da !important;
@@ -108,5 +112,31 @@ a.nav-link.active {
   } */
 .bg-icono {
   background-color: #FFFFFF !important;
+}
+
+.tabla {
+  margin-top: 0;
+  font-size: 1.5rem;
+  margin: 2rem 0;
+  max-height: 20rem;
+  overflow: auto;
+  margin-top: 0;
+}
+
+.thead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+}
+
+.nav-tabs .active-nav {
+  color: #3c8dbc !important;
+  background-color: #fff;
+  border-color: #dee2e6 #dee2e6 #fff;
+}
+
+.color-texto {
+  color: #495057 !important;
 }
 /*# sourceMappingURL=app.css.map */

@@ -8,18 +8,18 @@
             id: '',
             nombre: '',
             cantidad: '',
-            precio_compra:'',
+            precio_compra: '',
             precio_venta: '',
-        
+
             precio_original: '',
             valor_total: '',
             stock: ''
         }
-        let valoresObj={
-            total_sin_descuento:'',
-            total_pagar:'',
-            descuento:'',
-            costo:''
+        let valoresObj = {
+            total_sin_descuento: '',
+            total_pagar: '',
+            descuento: '',
+            costo: ''
 
 
         }
@@ -27,13 +27,13 @@
         let focusCantidad = true;
         let productosArray = [];
         let granTotal = 0;
-  
 
-  
+
+
         const selectClientes = document.querySelector('#selectClientes');
         const guardarVentaBtn = document.querySelector('#guardar-venta');
-        
- 
+
+
         const totalInput = document.querySelector('#total');
         const descuentoInput = document.querySelector('#descuento');
         const totalPagarInput = document.querySelector('#total_pagar');
@@ -65,29 +65,29 @@
         const codigoVenta = document.querySelector('#codigo-venta');
 
         leerDatosUrl();
-       
-       
 
-        guardarVentaBtn.addEventListener('click', function(){
+
+
+        guardarVentaBtn.addEventListener('click', function () {
             revisarVenta();
         })
 
         medotodoPago.addEventListener('change', function () {
-  
+
             if (contenedorCliente.classList.contains('d-none')) {
                 contenedorCliente.classList.remove('d-none');
             }
-            if(pagoContado.classList.contains('d-none')){
+            if (pagoContado.classList.contains('d-none')) {
                 pagoContado.classList.remove('d-none');
             }
-            if(pagoCuotas.classList.contains('d-none')){
+            if (pagoCuotas.classList.contains('d-none')) {
                 pagoCuotas.classList.remove('d-none');
             }
-            
+
 
 
             if (medotodoPago.value == 2) {
-               
+
                 abono.value = '';
                 saldo.value = valoresObj.total_pagar.toLocaleString('en');
                 resetearCliente();
@@ -98,7 +98,7 @@
                 emailCliente.readOnly = true;
                 btnQuitarCliente.disabled = true;
                 pagoContado.classList.add('d-none');
-                
+
             } else {
                 clienteId = null;
                 nombreCliente.readOnly = false;
@@ -109,13 +109,13 @@
                 btnQuitarCliente.disabled = false;
                 contenedorCliente.classList.add('d-none');
                 pagoCuotas.classList.add('d-none');
-                
+
 
 
             }
         })
 
-       
+
         bntAgregarCliente.addEventListener('click', function () {
 
             if (contenedorCliente.classList.contains('d-none')) {
@@ -141,58 +141,56 @@
         });
         $('#selectClientes').on('select2:select', function (e) {
             if (e.target.value != 0) {
-                
+
                 consultarInfoCliente(e.target.value);
             } else {
                 resetearCliente();
             }
-
-
         });
-   
 
-        async function cargarCodigoVenta(){
+
+        async function cargarCodigoVenta() {
 
             try {
                 const respuesta = await fetch(`${location.origin}/api/codigo-venta`);
                 const codigo_venta = await respuesta.json();
-            
+
                 codigoVenta.value = codigo_venta;
-                
+
             } catch (error) {
-                
+
             }
         }
 
         //leer el id de la url para saber si es una edicion 
-        function leerDatosUrl(){
+        function leerDatosUrl() {
             const urlActual = new URL(window.location);
             const params = new URLSearchParams(urlActual.search);
-            if(params.size==1){
+            if (params.size == 1) {
                 ventaId = atob(params.get('id'));
                 consultarVenta();
                 consultarCLientes();
-                
-                
-            }else{
+
+
+            } else {
                 cargarCodigoVenta()
                 consultarCLientes();
             }
-            
+
         }
-        async function consultarVenta(){
+        async function consultarVenta() {
             const url = `${location.origin}/api/venta?id=${ventaId}`;
             try {
                 const respuesta = await fetch(url);
                 const resultado = await respuesta.json();
                 llenarInformacion(resultado);
             } catch (error) {
-                
+
             }
         }
-        function llenarInformacion(resultado){
+        function llenarInformacion(resultado) {
             clienteId = resultado.cliente_id;
-         
+
             const productosVenta = resultado.productos_venta
             const venta = resultado.venta;
             codigoVenta.value = venta.codigo;
@@ -200,19 +198,19 @@
             // console.log(venta)
             let total_sin_descuento = 0;
 
-            productosVenta.forEach(productoVenta=>{
+            productosVenta.forEach(productoVenta => {
                 productoObj = {
                     id: productoVenta.id,
-                    nombre:  productoVenta.nombre,
-                    cantidad:  productoVenta.cantidad,
+                    nombre: productoVenta.nombre,
+                    cantidad: productoVenta.cantidad,
                     precio_compra: productoVenta.precio_compra,
-                    precio_venta:  productoVenta.precio,
+                    precio_venta: productoVenta.precio,
                     precio_original: productoVenta.precio_venta,
-                    valor_total: productoVenta.precio*productoVenta.cantidad,
-                    stock: parseFloat(productoVenta.stock)+parseFloat(productoVenta.cantidad)
-                    
+                    valor_total: productoVenta.precio * productoVenta.cantidad,
+                    stock: parseFloat(productoVenta.stock) + parseFloat(productoVenta.cantidad)
+
                 }
-                total_sin_descuento = parseFloat(total_sin_descuento) +  parseFloat(productoVenta.precio_venta)*productoVenta.cantidad
+                total_sin_descuento = parseFloat(total_sin_descuento) + parseFloat(productoVenta.precio_venta) * productoVenta.cantidad
                 productosArray.push(productoObj)
                 // total_sin_descuento = total_sin_descuento+productoVenta.precio_venta;
             })
@@ -222,16 +220,16 @@
             //     total_pagar:venta.recaudo,
             //     descuento:venta.descuento,
             //     costo:venta.costo
-       
-    
+
+
             // }
             mostrarProductos();
-            
+
             totalInput.value = total_sin_descuento.toLocaleString('en');
-            descuentoInput.value = resultado.venta.descuento+"%";
+            descuentoInput.value = resultado.venta.descuento + "%";
             totalPagarInput.value = parseFloat(resultado.venta.total).toLocaleString('en');
-           
-            if(venta.nombre_cliente!='' || venta.cedula_cliente!='' || venta.celular_cliente!='' || venta.direccion_cliente!=''  || venta.nombre!=undefined  ){
+
+            if (venta.nombre_cliente != '' || venta.cedula_cliente != '' || venta.celular_cliente != '' || venta.direccion_cliente != '' || venta.nombre != undefined) {
                 contenedorCliente.classList.remove('d-none');
                 nombreCliente.value = venta.nombre_cliente;
                 cedulaCliente.value = venta.cedula_cliente;
@@ -239,22 +237,22 @@
                 direccionCliente.value = venta.direccion_cliente;
                 emailCliente.value = venta.email_cliente;
             }
-         
-            if(venta.metodo_pago == 2){
+
+            if (venta.metodo_pago == 2) {
                 var optionToSelect = document.querySelector('#metodo_pago option[value="2"]');
                 optionToSelect.selected = true;
                 abono.value = (parseFloat(venta.recaudo)).toLocaleString('en');
-                saldo.value = (venta.total-venta.recaudo).toLocaleString('en'); 
+                saldo.value = (venta.total - venta.recaudo).toLocaleString('en');
                 pagoContado.classList.add('d-none');
                 pagoCuotas.classList.remove('d-none');
 
-        
-            }            
+
+            }
         }
-    
-        function revisarVenta(){
-    
-            if(productosArray.length==0){
+
+        function revisarVenta() {
+
+            if (productosArray.length == 0) {
                 Swal.fire({
                     icon: 'error',
 
@@ -264,182 +262,182 @@
                 return;
             }
 
-            if(medotodoPago.value!=1){
-                if(selectClientes.value == 0){
+            if (medotodoPago.value != 1) {
+                if (selectClientes.value == 0) {
                     Swal.fire({
                         icon: 'error',
-    
+
                         text: 'Para las ventas a credito es necesario seleccionar un cliente que se encuentre registrado',
-    
+
                     })
                     return;
                 }
-             
-               
+
+
             }
-            
+
 
             enviarInformacion();
-          
+
         }
-        async function enviarInformacion(){
-       
+        async function enviarInformacion() {
+
             const datos = new FormData();
-            if(ventaId){
+            if (ventaId) {
                 datos.append('id', ventaId);
             }
             datos.append('productosArray', JSON.stringify(productosArray));
             datos.append('total', valoresObj.total_pagar);
-          
+
             datos.append('costo', valoresObj.costo);
             datos.append('descuento', valoresObj.descuento);
             datos.append('metodo_pago', medotodoPago.value);
-            if(medotodoPago.value !=1){
+            if (medotodoPago.value != 1) {
                 valor_abono = 0;
-                if(abono.value!=''){
+                if (abono.value != '') {
                     valor_abono = abono.value;
                 }
                 datos.append('abono', valor_abono);
                 datos.append('saldo', saldo.value);
                 datos.append('cliente_id', selectClientes.value)
                 datos.append('recaudo', valor_abono);
-                if(parseFloat(valor_abono)<parseFloat(valoresObj.total_pagar)){
+                if (parseFloat(valor_abono) < parseFloat(valoresObj.total_pagar)) {
                     datos.append('estado', 0);
-                }else{
+                } else {
                     datos.append('estado', 1);
                 }
-              
-            }else{
+
+            } else {
                 datos.append('estado', 1);
                 datos.append('recaudo', valoresObj.total_pagar);
             }
-     
-          
-           
+
+
+
             datos.append('nombre_cliente', nombreCliente.value)
             datos.append('cedula_cliente', cedulaCliente.value)
             datos.append('celular_cliente', celularCliente.value)
-            datos.append('direccion_cliente',direccionCliente.value );
+            datos.append('direccion_cliente', direccionCliente.value);
             datos.append('email_cliente', emailCliente.value);
 
-  
 
-          
-          
+
+
+
             let url;
-            if(ventaId){
+            if (ventaId) {
                 url = `${location.origin}/api/editar-venta`;
-            }else{
+            } else {
                 url = `${location.origin}/api/crear-venta`;
             }
-        
+
             guardarVentaBtn.disabled = true;
             try {
-             
-                const respuesta = await fetch(url,{
-                    method:'POST',
-                    body:datos
+
+                const respuesta = await fetch(url, {
+                    method: 'POST',
+                    body: datos
                 });
                 const resultado = await respuesta.json();
-             
+
                 // return;
                 eliminarToastAnterior();
-              
-                if(resultado.type=='error'){
+
+                if (resultado.type == 'error') {
                     $(document).Toasts('create', {
                         class: 'bg-danger',
                         title: 'Error',
-                     
-                        body: resultado.msg
-                      })
-                    
-                }else{
-                    
-                    $(document).Toasts('create', {
-                        class: 'bg-azul text-blanco',
-                        title: 'Completado',
-                        
+
                         body: resultado.msg
                     })
 
-                  
+                } else {
 
-                
+                    $(document).Toasts('create', {
+                        class: 'bg-azul text-blanco',
+                        title: 'Completado',
+
+                        body: resultado.msg
+                    })
+
+
+
+
                     resetearVentaAnterior();
                 }
                 guardarVentaBtn.disabled = false;
-                  setTimeout(()=>{
-                        eliminarToastAnterior();
-                    },8000)
+                setTimeout(() => {
+                    eliminarToastAnterior();
+                },8000)
             } catch (error) {
-                
+
             }
 
         }
 
-        function resetearVentaAnterior(){
+        function resetearVentaAnterior() {
             ventaId = null;
             productosArray = [];
             productoObj = {
                 id: '',
                 nombre: '',
                 cantidad: '',
-                precio_compra:'',
+                precio_compra: '',
                 precio_venta: '',
-            
+
                 precio_original: '',
                 valor_total: '',
                 stock: ''
             }
-            valoresObj={
-                total_sin_descuento:'',
-                total_pagar:'',
-                descuento:'',
-                costo:''
-    
-    
+            valoresObj = {
+                total_sin_descuento: '',
+                total_pagar: '',
+                descuento: '',
+                costo: ''
+
+
             }
-    
-            const  selectProductos = $('#selectProductos');
-         
-            const  selectClientes = $('#selectClientes');
-      
+
+            const selectProductos = $('#selectProductos');
+
+            const selectClientes = $('#selectClientes');
+
             selectProductos.val("0").trigger('change.select2');
-       
+
             selectClientes.val("0").trigger('change.select2');
-      
-        
+
+
             medotodoPago.innerHTML = `
                 <option value="1">Pago e Contado</option>
                 <option value="2">Pago a Cuotas</option>
             `
-       
+
             cantidadPagar.value = '';
             cantidadCambio.value = '';
             abono.value = '';
-            saldo.value ='';
+            saldo.value = '';
             if (!contenedorCliente.classList.contains('d-none')) {
                 contenedorCliente.classList.add('d-none');
             }
             const pagoContado = document.querySelector('#pago-contado');
             const pagoCuotas = document.querySelector('#pago-cuotas');
-            if(!pagoCuotas.classList.contains('d-none')){
+            if (!pagoCuotas.classList.contains('d-none')) {
                 pagoCuotas.classList.add('d-none');
             }
-            if(pagoContado.classList.contains('d-none')){
-           
+            if (pagoContado.classList.contains('d-none')) {
+
                 pagoContado.classList.remove('d-none');
             }
-           
-      
+
+
             cargarCodigoVenta();
             resetearCliente();
             mostrarProductos();
-          
+
         }
 
 
-        
+
 
         async function consultarInfoCliente(id) {
 
@@ -448,29 +446,29 @@
                 const respuesta = await fetch(`${location.origin}/api/cliente?id=${id}`);
                 const resultado = await respuesta.json();
 
-    
+
 
                 eliminarToastAnterior();
-            
-                if(resultado.type=='error'){
+
+                if (resultado.type == 'error') {
                     $(document).Toasts('create', {
                         class: 'bg-danger',
                         title: 'Error',
-                     
+
                         body: resultado.msg
-                      })
-                }else{
+                    })
+                } else {
 
-               
 
-                    setTimeout(()=>{
+
+                    setTimeout(() => {
                         eliminarToastAnterior();
-                    },4000)
+                    }, 4000)
 
-                 
+
                     imprimirDatosCliente(resultado);
                 }
-            
+
             } catch (error) {
 
             }
@@ -478,16 +476,16 @@
 
         }
 
-        function imprimirDatosCliente(cliente){
-       
-            nombreCliente.value = cliente.nombre??'';
-            cedulaCliente.value = cliente.cedula??'';
-            celularCliente.value = cliente.celular??'';
-            direccionCliente.value = cliente.direccion??'';
-            emailCliente.value = cliente.email??'';
+        function imprimirDatosCliente(cliente) {
+
+            nombreCliente.value = cliente.nombre ?? '';
+            cedulaCliente.value = cliente.cedula ?? '';
+            celularCliente.value = cliente.celular ?? '';
+            direccionCliente.value = cliente.direccion ?? '';
+            emailCliente.value = cliente.email ?? '';
         }
 
-       
+
         function resetearCliente() {
             var selectClientes = $('#selectClientes');
             selectClientes.val("0").trigger('change.select2');
@@ -501,10 +499,10 @@
 
 
 
-     
-        
 
-    
+
+
+
         function calcularCambio(e) {
             cantidadPagar.value = formatearValor(e.target.value);
             const valor_pagar = parseFloat((cantidadPagar.value).replace(/,/g, ''));
@@ -513,15 +511,15 @@
 
         }
         function calcularSaldo(e) {
-            
+
             abono.value = formatearValor(e.target.value);
             const valor_abono = parseFloat((abono.value).replace(/,/g, ''));
-            const deuda =  valoresObj.total_pagar - valor_abono ;
+            const deuda = valoresObj.total_pagar - valor_abono;
             saldo.value = deuda.toLocaleString('en')
 
         }
 
-        
+
 
 
         function mostrarProductos() {
@@ -709,7 +707,7 @@
         }
 
         function resetarInputsMetodoPago() {
-         
+
             cantidadPagar.value = '';
             cantidadCambio.value = '';
             abono.value = '';
@@ -721,12 +719,12 @@
             let total_pagar = 0; //valor a pagar con modificaciones de precios 
             let total_costo = 0;
             productosArray.forEach(producto => {
-                
+
                 total = total + producto.cantidad * producto.precio_original;
                 total_pagar = total_pagar + producto.cantidad * producto.precio_venta;
-                total_costo = total_costo + producto.cantidad*producto.precio_compra;
+                total_costo = total_costo + producto.cantidad * producto.precio_compra;
             })
-        
+
             const descuento = 100 - total_pagar * 100 / total;
             descuentoInput.value = !isNaN(Number(descuento.toFixed(2))) ? Number(descuento.toFixed(2)) + '%' : 0 + '%';
             totalInput.value = total.toLocaleString('en');
@@ -735,9 +733,9 @@
             //llenamos el objeto con la informacion del pago de la venta
             valoresObj.total_sin_descuento = total;
             valoresObj.total_pagar = total_pagar;
-            valoresObj.descuento =  !isNaN(Number(descuento.toFixed(2))) ? Number(descuento.toFixed(2)): 0 ;
+            valoresObj.descuento = !isNaN(Number(descuento.toFixed(2))) ? Number(descuento.toFixed(2)) : 0;
             valoresObj.costo = total_costo;
-            
+
 
         }
 
@@ -749,7 +747,7 @@
 
             totalPagarInput.value = formatearValor(e.target.value);
             const total_pagar = parseFloat((totalPagarInput.value).replace(/,/g, ''));
-           
+
             let total = 0;
             productosArray.forEach(producto => {
                 total = total + producto.cantidad * producto.precio_original;
@@ -813,7 +811,7 @@
                             }
 
                         } else {
-                     
+
                             return {
                                 ...producto,
                                 precio_venta: 0,
@@ -907,57 +905,57 @@
                 referencia.removeChild(referencia.firstChild)
             }
         }
-        function eliminarToastAnterior(){
-            if(document.querySelector('#toastsContainerTopRight')){
+        function eliminarToastAnterior() {
+            if (document.querySelector('#toastsContainerTopRight')) {
                 document.querySelector('#toastsContainerTopRight').remove()
             }
         }
-        async function consultarCLientes(){
+        async function consultarCLientes() {
             limpiarHtml(selectClientes);
-            
+
             try {
                 const respuesta = await fetch(`${location.origin}/api/clientes-ventas`);
-                const resultado =  await respuesta.json();
-               
+                const resultado = await respuesta.json();
+
                 // llenarPrimerOption(selectCategorias);
-                const opcionDisabled =   document.createElement('OPTION');
+                const opcionDisabled = document.createElement('OPTION');
                 opcionDisabled.textContent = '--seleccione un cliente--';
                 opcionDisabled.value = "0";
 
                 selectClientes.appendChild(opcionDisabled);
-               
-        
-                
+
+
+
                 resultado.forEach(cliente => {
-                    
-                    const opcion =   document.createElement('OPTION');
+
+                    const opcion = document.createElement('OPTION');
                     opcion.value = cliente.id;
                     opcion.textContent = cliente.nombre;
-                    
-                    if(cliente.id == clienteId){
-               
+
+                    if (cliente.id == clienteId) {
+
                         opcion.selected = true;
                     }
-                   
+
                     selectClientes.appendChild(opcion)
-            
+
                 });
-         
+
                 $('#selectClientes').select2()
                 $('.select2bs4').select2({
                     theme: 'bootstrap4'
                 })
                 consultarInfoCliente(clienteId);
             } catch (error) {
-                
+
             }
             $('#selectProductos').select2()
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             })
-        
-       
-        }  
+
+
+        }
     }
 })();
 

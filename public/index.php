@@ -6,6 +6,7 @@ use Controllers\ApiCajas;
 use Controllers\ApiCategorias;
 use Controllers\ApiUsuarios;
 use Controllers\ApiClientes;
+use Controllers\ApiFiados;
 use Controllers\ApiProductos;
 use Controllers\ApiProveedores;
 use Controllers\ApiVentas;
@@ -15,6 +16,7 @@ use Controllers\UsuariosController;
 use Controllers\DashboardController;
 use Controllers\CategoriasController;
 use Controllers\ClientesController;
+use Controllers\FiadosController;
 use Controllers\ProductosController;
 use Controllers\ProveedoresController;
 use Controllers\VentasController;
@@ -37,6 +39,7 @@ $router->get('/clientes', [ClientesController::class, 'index']);
 $router->get('/productos', [ProductosController::class, 'index']);
 $router->get('/proveedores', [ProveedoresController::class, 'index']);
 $router->get('/cajas',[CajasController::class, 'index']);
+$router->get('/fiados',[FiadosController::class, 'index']);
 
 
 
@@ -117,6 +120,14 @@ $router->post('/api/caja/crear',[ApiCajas::class, 'crear']);
 $router->post('/api/caja/editar',[ApiCajas::class, 'editar']);
 $router->post('/api/caja/eliminar',[ApiCajas::class, 'eliminar']);
 $router->post('/api/caja/cerrar',[ApiCajas::class, 'cerrar']);
+
+/* API de las cuotas o fiados */
+
+$router->get('/api/pagos-cuotas',[ApiFiados::class, 'pagosCuotas']);
+// $router->get('/api/cuotas',[ApiFiados::class, 'cuotas']);
+
+$router->get('/api/productos-fiados',[ApiFiados::class, 'productosFiados']);
+$router->post('/api/pagar',[ApiFiados::class, 'pagar']);
 
 
 $router->comprobarRutas();

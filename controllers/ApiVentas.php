@@ -155,20 +155,35 @@ class ApiVentas
             }
 
             if($venta->metodo_pago == 2){
+
+                $numero_pago = 200000;
+                $ultima_cuota = Cuota::get(1);
+                if($ultima_cuota){
+                    $numero_pago = $ultima_cuota->numero_pago + 1;
+                }
              
-                $cuota = new Cuota();
-                $cuota->monto = $venta->recaudo;
-                $cuota->saldo = $venta->total- $venta->recaudo;
-                $cuota->fecha_pago = $venta->fecha;
-                $cuota->caja_id = $caja->id;
+              
             
-                $resultado_cuota = $cuota->guardar();
-          
+            
                 $pago_cuotas = new PagoCuota();
+
                 $pago_cuotas->venta_id = $resultado['id'];
-                $pago_cuotas->cuota_id = $resultado_cuota['id'];
                 $pago_cuotas->cliente_id = $_POST['cliente_id'];
-                $pago_cuotas->guardar();
+                $resultado =$pago_cuotas->guardar();
+
+                if($venta->recaudo!=0){
+                    $cuota = new Cuota();
+                    $cuota->monto = $venta->recaudo;
+                    $cuota->saldo = $venta->total- $venta->recaudo;
+                    $cuota->fecha_pago = $venta->fecha;
+                    $cuota->numero_pago = $numero_pago;
+                    $cuota->caja_id = $caja->id;
+                    $cuota->pago_cuotas_id = $resultado['id'];
+                
+                    $cuota->guardar();
+                }
+
+              
 
             }
             $db->commit();
@@ -225,6 +240,8 @@ class ApiVentas
                 $producto->guardar();
 
             }
+
+         
            
             $productos_venta = new ProductosVenta();
             $productos_venta->eliminarWhere('venta_id', $id);
@@ -240,9 +257,11 @@ class ApiVentas
             $venta->caja_id = $venta_actual->caja_id;
             $venta->formatearDatosFloat();
             $venta->guardar();
+
+            
        
 
-    
+      
             $productos = json_decode($_POST['productosArray']);
             foreach ($productos as $producto) {
                 $producto_actual = Producto::find($producto->id);
@@ -255,35 +274,54 @@ class ApiVentas
 
                 $productos_venta->guardar();
             }
-
+      
             
       
             if($venta_actual->metodo_pago ==2){
-                $pago_cuotas_actual = PagoCuota::where('venta_id', $venta->id);
-                $cuota_actual = Cuota::find($pago_cuotas_actual->cuota_id);
+
+                $numero_pago = 200000;
+                $ultima_cuota = Cuota::get(1);
+                if($ultima_cuota){
+                    $numero_pago = $ultima_cuota->numero_pago + 1;
+                }
+               
+         
+             
+          
+                $pago_cuotas_actual = PagoCuota::where('venta_id', $venta_actual->id);
+                $cuota_actual = Cuota::where('pago_cuotas_id',$pago_cuotas_actual->id);
+          
       
+                if($cuota_actual){
+                    $cuota_actual->eliminar();
+                }
+              
                 $pago_cuotas_actual->eliminar();
-               $cuota_actual->eliminar();
+      
+           
            
             }
+          
 
             if($venta->metodo_pago == 2){
                
+
+                $pago_cuotas = new PagoCuota();
+
+                $pago_cuotas->venta_id = $venta->id;
+                $pago_cuotas->cliente_id = $_POST['cliente_id'];
+                $resultado =$pago_cuotas->guardar();
 
                 $cuota = new Cuota();
                 $cuota->monto = $venta->recaudo;
                 $cuota->saldo = $venta->total- $venta->recaudo;
                 $cuota->fecha_pago = $venta->fecha;
+                $cuota->numero_pago = $numero_pago;
                 $cuota->caja_id = $venta->caja_id;
-      
-            
-                $resultado_cuota = $cuota->guardar();
-          
-                $pago_cuotas = new PagoCuota();
-                $pago_cuotas->venta_id = $venta->id;
-                $pago_cuotas->cuota_id = $resultado_cuota['id'];
-                $pago_cuotas->cliente_id = $_POST['cliente_id'];
-                $pago_cuotas->guardar();
+                $cuota->pago_cuotas_id = $resultado['id'];
+                $cuota->guardar();
+
+                
 
             }
             $db->commit();

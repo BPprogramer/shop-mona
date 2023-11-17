@@ -129,8 +129,8 @@ class ActiveRecord {
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
-     public static function allJoin($tablaPrimaria,$columnaPrimaria,$columnaForanea) {
-        $query = "SELECT * FROM " . static::$tabla . " inner join $tablaPrimaria ON ".static::$tabla.".$columnaForanea  = $tablaPrimaria.".$columnaPrimaria."  ORDER BY ".static::$tabla.".id DESC";
+     public static function toDoJoin($tablaPrimaria,$columnaPrimaria,$columnaForanea,$columna, $valor) {
+        $query = "SELECT * FROM " . static::$tabla . " inner join $tablaPrimaria ON ".static::$tabla.".$columnaForanea  = $tablaPrimaria.".$columnaPrimaria." WHERE $columna = $valor  ORDER BY ".static::$tabla.".id DESC";
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
