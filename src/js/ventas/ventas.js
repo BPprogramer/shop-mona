@@ -14,7 +14,7 @@
         })
         $('#tabla').on('click', '#eliminar', function(e){
             const ventaId = e.currentTarget.dataset.ventaId;
-            alertaEliminarProducto(ventaId,e);
+            alertaEliminarVenta(ventaId,e);
         })
     
 
@@ -52,7 +52,7 @@
             }
         }
 
-        function alertaEliminarProducto(id, e){
+        function alertaEliminarVenta(id, e){
   
             const numero_venta = e.currentTarget.parentElement.parentElement.parentElement.childNodes[1].textContent;
           
@@ -84,7 +84,7 @@
                     method: 'POST'
                 })
                 const resultado = await respuesta.json();
-            
+                console.log(resultado)
          
                 
                 eliminarToastAnterior();

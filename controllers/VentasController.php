@@ -6,7 +6,11 @@
 
     class VentasController{
         public static function index(Router $router){
-            session_start();
+      
+            if(!is_auth()){
+                header('Location:/login');
+            }
+            
             $router->render('ventas/index',[
                 'titulo'=>'Administrar Ventas',
                 'nombre'=>$_SESSION['nombre']

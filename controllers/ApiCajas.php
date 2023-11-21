@@ -4,6 +4,8 @@
 use Model\Caja;
 use Model\Cuota;
 use Model\Venta;
+use Model\Egreso;
+use Model\Ingreso;
 use Model\Usuario;
 
     class ApiCajas {
@@ -18,9 +20,9 @@ use Model\Usuario;
                  
                     $i++;
 
-                    $acciones = "<div class='d-flex justify-content-center' >";
+                    $acciones = "<div class='d-flex justify-content-float' >";
                     $acciones .="<button data-caja-id ='".$caja->id."' id='info'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Info</span><i class='fas fa-search'></i></button>";
-                    if($caja->numero_transacciones==0){
+                    if($caja->numero_transacciones==0 && $caja->estado==0){
                         $acciones .="<button data-caja-id ='".$caja->id."' id='editar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
                         $acciones .="<button data-caja-id ='".$caja->id."' id='eliminar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio' ><span class='toolMio-text'>Eliminar</span><i class='fas fa-trash' ></i></button>";
                     }
@@ -181,6 +183,19 @@ use Model\Usuario;
             if($cuotas){
                 foreach($cuotas as $cuota){
                     $total_ventas = $total_ventas + $cuota->monto;
+                }  
+            }
+
+            $ingresos = Ingreso::whereArray(['caja_id'=>$caja->id]);
+            if($ingresos){
+                foreach($ingresos as $ingreso){
+                    $total_ventas = $total_ventas + $ingreso->ingreso;
+                }  
+            }
+            $egresos = Egreso::whereArray(['caja_id'=>$caja->id]);
+            if($egresos){
+                foreach($egresos as $egreso){
+                    $total_ventas = $total_ventas - $egreso->egreso;
                 }  
             }
 

@@ -100,6 +100,35 @@
               </p>
             </a>
           </li>
+          <!--  ventas-->
+
+
+          <li class="nav-item">
+            <a href="" class="nav-link <?php echo (pagina_actual('ingreso') || pagina_actual('egreso')) ? 'active' : ''; ?>
+">
+              <i class="nav-icon fa-solid fa-exchange-alt"></i>
+              <p>
+                Transacciones
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/ingresos" class="nav-link <?php echo pagina_actual('ingreso') ? 'active':''?>"   style="<?php echo pagina_actual('ingreso') ? 'background-color:white !important;':''?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ingresos</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/egresos" class="nav-link <?php echo pagina_actual('egreso') ? 'active':''?>"   style="<?php echo pagina_actual('egreso') ? 'background-color:white !important;':''?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Egresos</p>
+                </a>
+              </li>
+            
+              
+            </ul>
+          </li>
          
           <li class="nav-item">
             <a href="/clientes" class="nav-link <?php echo pagina_actual('/clientes') ? 'active':''?>">

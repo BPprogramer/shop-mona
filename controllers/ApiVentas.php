@@ -375,7 +375,7 @@ class ApiVentas
         date_default_timezone_set('America/Bogota');
 
     
-
+    
         $id = $_POST['id'];
         $id = filter_var($id, FILTER_VALIDATE_INT);
         if(!$id){
@@ -385,6 +385,8 @@ class ApiVentas
         }
 
         $venta = Venta::find($id);
+      
+
         if(!$venta){
        
             echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
@@ -393,17 +395,22 @@ class ApiVentas
 
         //consultamos pagos asociasdos a la venta que se quiere eliminar
         //si existen pagos no debe dejar eliminar
-        $fiados_asociados = PagoCuota::where('venta_id', $venta->id);
-        if(!$fiados_asociados){
-            echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
-            return;
+        if($venta->metodo_pago ==2){
+            $fiados_asociados = PagoCuota::where('venta_id', $venta->id);
+            if(!$fiados_asociados){
+                echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
+                return;
+            }
+           
+          
+    
+            $pagos_asociados = Cuota::whereArray(['pago_cuotas_id'=>$fiados_asociados->id]);
+            if(count($pagos_asociados)>0){
+                echo json_encode(['type'=>'error', 'msg'=>'Tiene pagos asociados por lo que no puede eliminar la venta']);
+                return;
+            }
         }
-
-        $pagos_asociados = Cuota::whereArray(['pago_cuotas_id'=>$fiados_asociados->id]);
-        if(count($pagos_asociados)>0){
-            echo json_encode(['type'=>'error', 'msg'=>'Tiene pagos asociados por lo que no puede eliminar la venta']);
-            return;
-        }
+   
         
 
 
@@ -438,6 +445,9 @@ class ApiVentas
             //    $cuota_actual->eliminar();
            
             }
+            $caja = Caja::find($venta->caja_id);
+            $caja->numero_transacciones =  $caja->numero_transacciones - 1;
+            $caja->guardar();
      
             $venta->eliminar();
        

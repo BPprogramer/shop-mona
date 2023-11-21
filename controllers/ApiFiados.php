@@ -93,10 +93,11 @@ use Model\ProductosVenta;
             $db = Venta::getDB();
             $db->begin_transaction();
             
-
+            $caja->numero_transacciones = $caja->numero_transacciones - 1;
             try {
                 $venta->guardar();
                 $cuota->eliminar();
+                $caja->guardar();
                
                 $db->commit();
                 echo json_encode(['type' => 'success', 'msg' => 'Pago eliminado exitosamente']);
@@ -135,6 +136,10 @@ use Model\ProductosVenta;
             $pago_ventas = PagoCuota::toDoJoin('ventas', 'id', 'venta_id', 'cliente_id', $_POST['cliente_id']);
             $pago_ventas = array_reverse($pago_ventas);
 
+            if(!$pago_ventas){
+                echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
+                return;
+            }
 
             //si todos los fiados fueron pagados no podemos pagarlos otra vez
             $existe_fiados = array_filter($pago_ventas,function($pago_venta){
@@ -151,10 +156,6 @@ use Model\ProductosVenta;
             }
 
      
-            if(!$pago_ventas){
-                echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
-                return;
-            }
 
             
             $db->begin_transaction();
@@ -166,7 +167,7 @@ use Model\ProductosVenta;
                 $sobrante = $monto;
             
              
-                foreach ($pago_ventas as $pago_venta) {
+                foreach ($existe_fiados as $pago_venta) {
 
                     if($sobrante>0){
                         $venta = new Venta();

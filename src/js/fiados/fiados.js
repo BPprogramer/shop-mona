@@ -205,7 +205,8 @@
                 btnEliminar.innerHTML = '<span class="toolMio-text">Eliminar</span><i class="fas fa-trash"></i>';
 
                 btnEliminar.onclick = function () {
-                    eliminarPago(pago.numero_pago); //vamos a revisar que la 
+                    //eliminarPago(pago.numero_pago); //vamos a revisar que la 
+                    alertaEliminarPago(pago);
                 }
                 // divAcciones.appendChild(btnInfo);
                 divAcciones.appendChild(btnEliminar);
@@ -222,10 +223,29 @@
 
         }
 
-        async function eliminarPago(numero_pago) {
+        function alertaEliminarPago(pago){
+            
+            
+            Swal.fire({
+                icon:'warning',
+                html: `<h2 class="">esta seguro de eliminar el pago por un valor de <span class="font-weight-bold"> ${(parseFloat(pago.monto)).toLocaleString('en')} </span>?</h2><br><p>Esta acción no se puede deshacer</p>`,
+          
+                showCancelButton: true,
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: `Cancelar`,
+                
+
+            }).then(result=>{
+                if(result.isConfirmed){
+                    eliminarPago(pago)
+                }
+            })
+        }
+
+        async function eliminarPago(pago) {
            
             const datos = new FormData();
-            datos.append('numero_pago', numero_pago);
+            datos.append('numero_pago', pago.numero_pago);
             const url = `${location.origin}/api/eliminar-pago`;
             try {
                 const respuesta = await fetch(url, {

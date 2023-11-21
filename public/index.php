@@ -2,24 +2,29 @@
 
 require_once __DIR__ . '/../includes/app.php';
 
-use Controllers\ApiCajas;
-use Controllers\ApiCategorias;
-use Controllers\ApiUsuarios;
-use Controllers\ApiClientes;
-use Controllers\ApiFiados;
-use Controllers\ApiProductos;
-use Controllers\ApiProveedores;
-use Controllers\ApiVentas;
-use Controllers\CajasController;
 use MVC\Router;
+use Controllers\ApiCajas;
+use Controllers\ApiFiados;
+use Controllers\ApiVentas;
+use Controllers\ApiEgresos;
+use Controllers\ApiClientes;
+use Controllers\ApiIngresos;
+use Controllers\ApiUsuarios;
+use Controllers\ApiProductos;
+use Controllers\ApiCategorias;
+use Controllers\ApiProveedores;
+use Controllers\CajasController;
+use Controllers\FiadosController;
+use Controllers\VentasController;
+use Controllers\EgresosController;
+use Controllers\ClientesController;
+use Controllers\IngresosController;
 use Controllers\UsuariosController;
 use Controllers\DashboardController;
-use Controllers\CategoriasController;
-use Controllers\ClientesController;
-use Controllers\FiadosController;
 use Controllers\ProductosController;
+use Controllers\CategoriasController;
 use Controllers\ProveedoresController;
-use Controllers\VentasController;
+use Controllers\TransaccionesController;
 
 $router = new Router();
 
@@ -40,6 +45,8 @@ $router->get('/productos', [ProductosController::class, 'index']);
 $router->get('/proveedores', [ProveedoresController::class, 'index']);
 $router->get('/cajas',[CajasController::class, 'index']);
 $router->get('/fiados',[FiadosController::class, 'index']);
+$router->get('/ingresos',[IngresosController::class, 'index']);
+$router->get('/egresos',[EgresosController::class, 'index']);
 
 
 
@@ -130,6 +137,20 @@ $router->get('/api/pagos-cuotas',[ApiFiados::class, 'pagosCuotas']);
 $router->get('/api/productos-fiados',[ApiFiados::class, 'productosFiados']);
 $router->post('/api/pagar',[ApiFiados::class, 'pagar']);
 $router->post('/api/eliminar-pago',[ApiFiados::class, 'eliminarPago']);
+
+/* api ingresos */
+$router->get('/api/ingresos', [ApiIngresos::class, 'ingresos']);
+$router->post('/api/ingreso/crear', [ApiIngresos::class, 'crear']);
+$router->post('/api/ingreso/editar', [ApiIngresos::class, 'editar']);
+$router->post('/api/ingreso/eliminar', [ApiIngresos::class, 'eliminar']);
+$router->get('/api/ingreso', [ApiIngresos::class, 'ingreso']);
+
+$router->get('/api/egresos', [ApiEgresos::class, 'egresos']);
+$router->post('/api/egreso/crear', [ApiEgresos::class, 'crear']);
+$router->post('/api/egreso/editar', [ApiEgresos::class, 'editar']);
+$router->post('/api/egreso/eliminar', [ApiEgresos::class, 'eliminar']);
+$router->get('/api/egreso', [ApiEgresos::class, 'egreso']);
+
 
 
 $router->comprobarRutas();
