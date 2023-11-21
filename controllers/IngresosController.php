@@ -11,7 +11,7 @@ class IngresosController{
             header('Location:/login');
         }
         $router->render('transacciones/ingresos',[
-            'titulo'=>'Ingregos',
+            'titulo'=>'Ingresos',
             'nombre'=>$_SESSION['nombre']
         ]);
     }

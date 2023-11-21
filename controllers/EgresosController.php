@@ -11,7 +11,7 @@ class EgresosController{
             header('Location:/login');
         }
         $router->render('transacciones/egresos',[
-            'titulo'=>'Egregos',
+            'titulo'=>'Egresos',
             'nombre'=>$_SESSION['nombre']
         ]);
     }
