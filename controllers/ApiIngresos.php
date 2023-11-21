@@ -10,7 +10,7 @@ class ApiIngresos{
 
     public static function ingresos(){
         $ingresos = Ingreso::all();
-      
+
 
         $i=0;
         $datoJson = '{

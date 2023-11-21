@@ -189,13 +189,18 @@ use Model\Usuario;
             $ingresos = Ingreso::whereArray(['caja_id'=>$caja->id]);
             if($ingresos){
                 foreach($ingresos as $ingreso){
-                    $total_ventas = $total_ventas + $ingreso->ingreso;
+                    if($ingreso->estado!=0){
+                        $total_ventas = $total_ventas + $ingreso->ingreso;
+                    }
+                   
                 }  
             }
             $egresos = Egreso::whereArray(['caja_id'=>$caja->id]);
             if($egresos){
                 foreach($egresos as $egreso){
-                    $total_ventas = $total_ventas - $egreso->egreso;
+                    if($egreso->estado!=0){
+                        $total_ventas = $total_ventas - $egreso->egreso;
+                    }
                 }  
             }
 
