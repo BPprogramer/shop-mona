@@ -21,6 +21,7 @@
         <link rel="stylesheet" href="/plugins/jqvmap/jqvmap.min.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+  
 
         <!-- overlayScrollbars -->
         <link rel="stylesheet" href="/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
@@ -88,11 +89,14 @@
         <!-- overlayScrollbars -->
  <!--        <script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script> -->
         <!-- AdminLTE App -->
+     
         <script src="/dist/js/adminlte.js"></script>
         <!-- AdminLTE for demo purposes -->
     
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
    <!--   <script src="/dist/js/pages/dashboard.js"></script>  -->
+
+        <script src="/plugins/select2/js/select2.full.min.js"></script>
         <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
         <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
         <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -102,6 +106,7 @@
         <script src="/plugins/jszip/jszip.min.js"></script>
         <script src="/plugins/pdfmake/pdfmake.min.js"></script>
         <script src="/plugins/pdfmake/vfs_fonts.js"></script>
+        <script src="/plugins/daterangepicker/daterangepicker.js"></script>
         <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
         <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
         <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
@@ -117,6 +122,9 @@
         //     }).buttons().container().appendTo('#tabla_wrapper .col-md-6:eq(0)');
             
         // });
+</script>
+<script>
+
 </script>
 
 

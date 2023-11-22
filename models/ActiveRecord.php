@@ -308,6 +308,18 @@ class ActiveRecord {
         $resultado = self::$db->query($query);
         return $resultado->fetch_assoc();
     }
+    public static function contarPorFecha($columna = null, $valor= null, $columna_fecha, $fecha){
+   
+        $query = "SELECT count(*) AS total FROM "  . static::$tabla." WHERE $columna_fecha >= '$fecha'";
+        if($columna){
+            $query = "SELECT count(*) AS total FROM "  . static::$tabla ." WHERE $columna =  $valor AND  $columna_fecha >= '$fecha'";
+        }
+
+
+  
+        $resultado = self::$db->query($query);
+        return $resultado->fetch_assoc();
+    }
 
     /* multica dos columnas y se trae toda la suma */
     // public static function totalProducto($columna1, $columna2){

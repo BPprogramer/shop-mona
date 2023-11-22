@@ -1,146 +1,77 @@
-$(function () {
-    'use strict'
-  
-    var ticksStyle = {
-      fontColor: '#495057',
-      fontStyle: 'bold'
+(function(){
+
+    const reporte = document.querySelector('#reporte');
+    if(reporte){
+        const ingresos = document.querySelector('#reporte_ingresos')
+        const ganancias = document.querySelector('#reporte_ganancias')
+        const costos = document.querySelector('#reporte_costos')
+        const inventario = document.querySelector('#reporte_inventario')
+        const ingresos_reales = document.querySelector('#reporte_ingresos_reales')
+        const ganancias_reales = document.querySelector('#reporte_ganancias_reales')
+        const dinero_fiados = document.querySelector('#reporte_dinero_fiados')
+        const numero_ventas = document.querySelector('#reporte_numero_ventas')
+        const numero_fiados = document.querySelector('#reporte_numero_fiados')
+        const numero_pagos = document.querySelector('#reporte_numero_pagos')
+        const numero_cajas = document.querySelector('#reporte_numero_cajas')
+        const numero_productos = document.querySelector('#reporte_numero_productos')
+        const numero_clientes = document.querySelector('#reporte_numero_clientes')
+
+        const fecha = document.querySelector('#fecha');
+        fecha.addEventListener('input',function(e){
+        
+            cargarInformacion(e.target.value);
+        })
+    
+
+        llenarIputFecha();
+
+        function llenarIputFecha(){
+            const fecha_actual = new Date();
+            fecha_actual.setMonth(fecha_actual.getMonth() - 1);
+            const fecha_actual_formateada = fecha_actual.toISOString().slice(0,10);
+            fecha.value = fecha_actual_formateada
+     
+            cargarInformacion(fecha.value);
+        }
+
+       
+
+        function mostrarInfo(resultado){
+   
+            ingresos.textContent = resultado.ingresos
+            ganancias.textContent = resultado.ganancias
+            costos.textContent = resultado.costos
+            inventario.textContent = resultado.inventario
+            ingresos_reales.textContent = resultado.ingresos_reales
+            ganancias_reales.textContent = resultado.ganancias_reales
+            dinero_fiados.textContent = resultado.fiados
+            numero_ventas.textContent = resultado.numero_ventas
+            numero_fiados.textContent = resultado.numero_fiados
+            numero_pagos.textContent = resultado.numero_pagos
+            numero_cajas.textContent = resultado.numero_cajas
+            numero_productos.textContent = resultado.numero_productos
+            numero_clientes.textContent = resultado.numero_clientes
+            
+        }
+
+        async function cargarInformacion(fecha){
+
+            const datos = new FormData();
+            datos.append('fecha',fecha);
+            const url = `${location.origin}/api/info-general`;
+
+            try {
+                const respuesta = await fetch(url,{
+                    method:'POST',
+                    body:datos
+                });
+                const resultado = await respuesta.json();
+
+                // console.log(resultado);
+                mostrarInfo(resultado);
+            } catch (error) {
+                console.log(error)
+            }
+        }
     }
-  
-    var mode = 'index'
-    var intersect = true
-  
-    var $salesChart = $('#sales-chart')
-    // eslint-disable-next-line no-unused-vars
-    var salesChart = new Chart($salesChart, {
-      type: 'bar',
-      data: {
-        labels: ['JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-        datasets: [
-          {
-            backgroundColor: '#007bff',
-            borderColor: '#007bff',
-            data: [1000, 2000, 3000, 2500, 2700, 2500, 3000]
-          },
-          {
-            backgroundColor: '#ced4da',
-            borderColor: '#ced4da',
-            data: [700, 1700, 2700, 2000, 1800, 1500, 2000]
-          }
-        ]
-      },
-      options: {
-        maintainAspectRatio: false,
-        tooltips: {
-          mode: mode,
-          intersect: intersect
-        },
-        hover: {
-          mode: mode,
-          intersect: intersect
-        },
-        legend: {
-          display: false
-        },
-        scales: {
-          yAxes: [{
-            // display: false,
-            gridLines: {
-              display: true,
-              lineWidth: '4px',
-              color: 'rgba(0, 0, 0, .2)',
-              zeroLineColor: 'transparent'
-            },
-            ticks: $.extend({
-              beginAtZero: true,
-  
-              // Include a dollar sign in the ticks
-              callback: function (value) {
-                if (value >= 1000) {
-                  value /= 1000
-                  value += 'k'
-                }
-  
-                return '$' + value
-              }
-            }, ticksStyle)
-          }],
-          xAxes: [{
-            display: true,
-            gridLines: {
-              display: false
-            },
-            ticks: ticksStyle
-          }]
-        }
-      }
-    })
-  
-    var $visitorsChart = $('#visitors-chart')
-    // eslint-disable-next-line no-unused-vars
-    var visitorsChart = new Chart($visitorsChart, {
-      data: {
-        labels: ['18th', '20th', '22nd', '24th', '26th', '28th', '30th'],
-        datasets: [{
-          type: 'line',
-          data: [100, 120, 170, 167, 180, 177, 160],
-          backgroundColor: 'transparent',
-          borderColor: '#007bff',
-          pointBorderColor: '#007bff',
-          pointBackgroundColor: '#007bff',
-          fill: false
-          // pointHoverBackgroundColor: '#007bff',
-          // pointHoverBorderColor    : '#007bff'
-        },
-        {
-          type: 'line',
-          data: [60, 80, 70, 67, 80, 77, 100],
-          backgroundColor: 'tansparent',
-          borderColor: '#ced4da',
-          pointBorderColor: '#ced4da',
-          pointBackgroundColor: '#ced4da',
-          fill: false
-          // pointHoverBackgroundColor: '#ced4da',
-          // pointHoverBorderColor    : '#ced4da'
-        }]
-      },
-      options: {
-        maintainAspectRatio: false,
-        tooltips: {
-          mode: mode,
-          intersect: intersect
-        },
-        hover: {
-          mode: mode,
-          intersect: intersect
-        },
-        legend: {
-          display: false
-        },
-        scales: {
-          yAxes: [{
-            // display: false,
-            gridLines: {
-              display: true,
-              lineWidth: '4px',
-              color: 'rgba(0, 0, 0, .2)',
-              zeroLineColor: 'transparent'
-            },
-            ticks: $.extend({
-              beginAtZero: true,
-              suggestedMax: 200
-            }, ticksStyle)
-          }],
-          xAxes: [{
-            display: true,
-            gridLines: {
-              display: false
-            },
-            ticks: ticksStyle
-          }]
-        }
-      }
-    })
-  })
-  
-  // lgtm [js/unused-local-variable]
-  
+})();

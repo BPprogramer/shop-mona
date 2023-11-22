@@ -14,6 +14,7 @@ use Controllers\ApiUsuarios;
 use Controllers\ApiProductos;
 use Controllers\ApiCategorias;
 use Controllers\ApiProveedores;
+use Controllers\ApiReportes;
 use Controllers\CajasController;
 use Controllers\FiadosController;
 use Controllers\VentasController;
@@ -122,6 +123,9 @@ $router->post('/api/venta/eliminar',[ApiVentas::class, 'eliminar']);
 $router->get('/api/productos-ventas',[ApiVentas::class, 'productos']);
 $router->get('/api/clientes-ventas',[ApiVentas::class, 'clientes']);
 $router->get('/api/codigo-venta',[ApiVentas::class, 'codigoVenta']);
+
+/* API ereporte de ventas */
+$router->post('/api/info-general',[ApiReportes::class, 'info']);
 
 
 /* API DE LAS cajas*/
