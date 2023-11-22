@@ -5,6 +5,7 @@ require_once __DIR__ . '/../includes/app.php';
 use MVC\Router;
 use Controllers\ApiCajas;
 use Controllers\ApiFiados;
+use Controllers\ApiInicio;
 use Controllers\ApiVentas;
 use Controllers\ApiEgresos;
 use Controllers\ApiClientes;
@@ -47,6 +48,13 @@ $router->get('/cajas',[CajasController::class, 'index']);
 $router->get('/fiados',[FiadosController::class, 'index']);
 $router->get('/ingresos',[IngresosController::class, 'index']);
 $router->get('/egresos',[EgresosController::class, 'index']);
+
+/* VENTAS CONTROLLERS */
+
+$router->get('/crear-venta',[VentasController::class, 'crear']);
+$router->get('/ventas',[VentasController::class, 'index']);
+$router->get('/reporte-ventas',[VentasController::class, 'reporte']);
+
 
 
 
@@ -100,10 +108,6 @@ $router->post('/api/producto/editar-stock', [ApiProductos::class, 'editarStock']
 $router->post('/api/producto/eliminar', [ApiProductos::class, 'eliminar']);
 $router->get('/api/producto', [ApiProductos::class, 'consultarProducto']);
 
-/* VENTAS CONTROLLERS */
-
-$router->get('/crear-venta',[VentasController::class, 'crear']);
-$router->get('/ventas',[VentasController::class, 'index']);
 
 
 
@@ -151,6 +155,7 @@ $router->post('/api/egreso/editar', [ApiEgresos::class, 'editar']);
 $router->post('/api/egreso/eliminar', [ApiEgresos::class, 'eliminar']);
 $router->get('/api/egreso', [ApiEgresos::class, 'egreso']);
 
-
+//api Inicio
+$router->get('/api/inicio', [ApiInicio::class, 'index']);
 
 $router->comprobarRutas();

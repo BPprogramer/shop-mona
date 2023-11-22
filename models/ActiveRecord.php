@@ -284,4 +284,35 @@ class ActiveRecord {
         $resultado = self::$db->query($query);
         return $resultado;
     }
+
+    /* suma todos los registros de una columna */
+    public static function total($string,$columna_fecha=null, $fecha=null){
+   
+        $query = "SELECT sum($string) AS total FROM "  . static::$tabla;
+        if($fecha){
+            $query = "SELECT sum($string) AS total FROM "  . static::$tabla ." WHERE $columna_fecha >=  '$fecha'";
+        }
+  
+        $resultado = self::$db->query($query);
+        return $resultado->fetch_assoc();
+    }
+
+    //contar la cantidad de datos dada una condicion 
+    public static function contar($columna = null, $valor= null){
+   
+        $query = "SELECT count(*) AS total FROM "  . static::$tabla;
+        if($columna){
+            $query = "SELECT count(*) AS total FROM "  . static::$tabla ." WHERE $columna =  $valor";
+        }
+  
+        $resultado = self::$db->query($query);
+        return $resultado->fetch_assoc();
+    }
+
+    /* multica dos columnas y se trae toda la suma */
+    // public static function totalProducto($columna1, $columna2){
+    //     $query = "SELECT sum($columna1*$columna2) AS total FROM "  . static::$tabla;
+    //     $resultado = self::$db->query($query);
+    //     return $resultado->fetch_assoc();
+    // }
 }

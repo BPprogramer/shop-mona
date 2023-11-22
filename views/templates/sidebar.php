@@ -64,12 +64,12 @@
                   <p>Administrar Ventas</p>
                 </a>
               </li>
-              <li class="nav-item">
+            <!--   <li class="nav-item">
                 <a href="/reporte-ventas" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Reporte de Ventas</p>
                 </a>
-              </li>
+              </li> -->
               
             </ul>
           </li>

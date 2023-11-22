@@ -16,6 +16,17 @@
                 'nombre'=>$_SESSION['nombre']
             ]);
         }
+        public static function reporte(Router $router){
+      
+            if(!is_auth()){
+                header('Location:/login');
+            }
+            
+            $router->render('ventas/reporte',[
+                'titulo'=>'Reporte de Ventas',
+                'nombre'=>$_SESSION['nombre']
+            ]);
+        }
 
         public static function crear(Router $router){
             if(!is_auth()){
