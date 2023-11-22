@@ -82,6 +82,16 @@
             </a>
           </li>
 
+    
+          <li class="nav-item">
+            <a href="/cajas" class="nav-link <?php echo pagina_actual('/cajas') ? 'active':''?>">
+            <i class="nav-icon fa-solid fa-cash-register"></i>
+              <p>
+               Cajas
+               
+              </p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="/productos" class="nav-link <?php echo pagina_actual('/productos') ? 'active':''?>">
             <i class="nav-icon fa-brands fa-product-hunt"></i>
@@ -92,15 +102,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/cajas" class="nav-link <?php echo pagina_actual('/cajas') ? 'active':''?>">
-            <i class="nav-icon fa-solid fa-cash-register"></i>
+            <a href="/compras" class="nav-link <?php echo pagina_actual('/compras') ? 'active':''?>">
+            <i class="nav-icon fa-solid fa-bag-shopping"></i>
               <p>
-               Cajas
+                Avastesimiento
                
               </p>
             </a>
           </li>
-          <!--  ventas-->
+    
 
 
           <li class="nav-item">

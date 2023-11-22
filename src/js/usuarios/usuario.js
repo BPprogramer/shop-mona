@@ -44,12 +44,7 @@
                 "retrieve":true,
                 "proccesing":true,
                 responsive:true,
-                initComplete: function () {
-                    // Inicializa los botones después de que la tabla se haya creado
-                    var buttons = new $.fn.dataTable.Buttons(tablaUsuarios, {
-                        buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
-                    }).container().appendTo('#tabla_wrapper .col-md-6:eq(0)');
-                }
+             
             });
        
         }  

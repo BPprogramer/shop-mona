@@ -143,6 +143,7 @@
                 "retrieve":true,
                 "proccesing":true,
                 responsive:true
+                
             });
             
             // $.ajax({

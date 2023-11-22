@@ -15,6 +15,7 @@ use Controllers\ApiProductos;
 use Controllers\ApiCategorias;
 use Controllers\ApiProveedores;
 use Controllers\ApiReportes;
+use Controllers\AvastesimientoController;
 use Controllers\CajasController;
 use Controllers\FiadosController;
 use Controllers\VentasController;
@@ -49,6 +50,7 @@ $router->get('/cajas',[CajasController::class, 'index']);
 $router->get('/fiados',[FiadosController::class, 'index']);
 $router->get('/ingresos',[IngresosController::class, 'index']);
 $router->get('/egresos',[EgresosController::class, 'index']);
+$router->get('/compras',[AvastesimientoController::class, 'index']);
 
 /* VENTAS CONTROLLERS */
 
@@ -108,6 +110,7 @@ $router->post('/api/producto/editar', [ApiProductos::class, 'editar']);
 $router->post('/api/producto/editar-stock', [ApiProductos::class, 'editarStock']);
 $router->post('/api/producto/eliminar', [ApiProductos::class, 'eliminar']);
 $router->get('/api/producto', [ApiProductos::class, 'consultarProducto']);
+$router->get('/api/compras', [ApiProductos::class, 'avastecimiento']);
 
 
 
