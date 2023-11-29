@@ -27,6 +27,9 @@
         let focusCantidad = true;
         let productosArray = [];
         let granTotal = 0;
+        let listadoProductos;
+
+
 
 
 
@@ -64,7 +67,71 @@
         //codigo de la venta
         const codigoVenta = document.querySelector('#codigo-venta');
 
+        const codigoProducto = document.querySelector('#codigo-producto');
+        const selectProductos = document.querySelector('#selectProductos');
+
         leerDatosUrl();
+        consultarProductos();
+
+        async function consultarProductos() {
+
+
+            try {
+                const respuesta = await fetch(`${location.origin}/api/productos-ventas`);
+                const resultado = await respuesta.json();
+                listadoProductos = resultado;
+                productoPorCodigo(listadoProductos);
+               
+
+                // llenarPrimerOption(selectCategorias);
+                const opcionDisabled = document.createElement('OPTION');
+                opcionDisabled.textContent = '--seleccione un producto--';
+                opcionDisabled.value = "0";
+
+                selectProductos.appendChild(opcionDisabled);
+                resultado.forEach(producto => {
+
+                    const opcion = document.createElement('OPTION');
+                    opcion.value = producto.id;
+                    opcion.textContent = producto.nombre;
+
+
+                    selectProductos.appendChild(opcion)
+
+                });
+
+                $('#selectProductos').select2()
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                })
+            } catch (error) {
+
+            }
+            $('#selectProductos').select2()
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+
+
+        }
+
+        function  productoPorCodigo(listadoProductos){
+            
+            codigoProducto.addEventListener('input',function(e){
+                e.preventDefault();
+                const productoSeleccionado = listadoProductos.filter(producto =>{
+
+                    
+                    return producto.codigo == e.target.value
+                })
+                if(productoSeleccionado.length>0){
+                
+                    consultarInfoProducto(productoSeleccionado[0].id)
+                    e.target.value = '';
+                }
+            })
+        }
+        
 
 
 
@@ -147,6 +214,8 @@
                 resetearCliente();
             }
         });
+
+
 
 
         async function cargarCodigoVenta() {
@@ -368,7 +437,7 @@
                 guardarVentaBtn.disabled = false;
                 setTimeout(() => {
                     eliminarToastAnterior();
-                },8000)
+                }, 8000)
             } catch (error) {
 
             }
@@ -848,6 +917,7 @@
             try {
                 const respuesta = await fetch(`${location.origin}/api/producto?id=${id}`);
                 const resultado = await respuesta.json();
+             
 
 
                 if (resultado.stock > 0) {

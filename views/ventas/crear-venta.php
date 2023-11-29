@@ -29,7 +29,7 @@
 
                 <div class="card card-info card-outline">
                     <div class="row px-2">
-                        <div class="col-sm-5 my-1">
+                        <div class="col-sm-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <button type="button" class="btn pl-0 font-weight-bold">Producto</button>
@@ -40,8 +40,17 @@
                                 </select>
                             </div>
 
+
                         </div>
-                        <div class="col-sm-5 my-1">
+                        <div class="col-sm-2 my-1">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn font-weight-bold pl-0">Código</button>
+                                </div>
+                                <input type="text" value="" id="codigo-producto" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-sm-4 my-1">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <button type="button" class="btn pl-0 font-weight-bold">Responsable</button>
