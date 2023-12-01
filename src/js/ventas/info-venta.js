@@ -31,6 +31,7 @@
             const fechaVenta = document.querySelector('#fecha-venta');
 
             const totalVenta = document.querySelector('#total-venta');
+            const totalVentaSinComision = document.querySelector('#total-sin-comision');
             const recaudoVenta = document.querySelector('#recaudo-venta');
             const saldoVenta = document.querySelector('#saldo-venta');
             const metodoVenta = document.querySelector('#metodo-venta');
@@ -39,13 +40,17 @@
             codigoVenta.textContent = venta.codigo
             clienteVenta.textContent = venta.nombre_cliente
             fechaVenta.textContent = venta.fecha
-            totalVenta.textContent = (parseFloat(venta.total)).toLocaleString('en');
+            totalVenta.textContent = (parseFloat(venta.total_factura)).toLocaleString('en');
+            totalVentaSinComision.textContent = (parseFloat(venta.total)).toLocaleString('en');
             recaudoVenta.textContent = (parseFloat(venta.recaudo)).toLocaleString('en');
-            saldoVenta.textContent = (parseFloat(venta.total - venta.recaudo)).toLocaleString('en');
+            saldoVenta.textContent = (parseFloat(venta.total_factura - venta.recaudo)).toLocaleString('en');
 
          
             if(venta.metodo_pago==2){
                 metodoVenta.textContent = 'Fiado'
+            }
+            if(venta.metodo_pago==3){
+                metodoVenta.textContent = 'Mercad Libre'
             }
             if(venta.metodo_pago==1){
                 metodoVenta.textContent = 'De Contado'

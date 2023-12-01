@@ -1,4 +1,5 @@
-<?php //include_once __DIR__ . '/../templates/content-header.php'; ?>
+<?php //include_once __DIR__ . '/../templates/content-header.php'; 
+?>
 <div class="container-fluid px-3 mt-2">
     <div class="row">
         <div class="col-12">
@@ -76,10 +77,13 @@
                         <div class="col-sm-2">
                             <p class="font-bold font-weight-bold">Cantidad</p>
                         </div>
-                        <div class="col-sm-3">
-                            <p class="font-bold font-weight-bold">Precio Unitario</p>
+                        <div class="col-sm-2">
+                            <p class="font-bold font-weight-bold">Precio Sin Comisión</p>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
+                            <p class="font-bold font-weight-bold">Precio Normal</p>
+                        </div>
+                        <div class="col-sm-2">
                             <p class="font-bold font-weight-bold">Sub Total</p>
                         </div>
                     </div>
@@ -104,8 +108,9 @@
                                         </div>
 
                                         <select class="form-control" name="" id="metodo_pago">
-                                            <option value="1">Pago e Contado</option>
+                                            <option value="1">Pago de Contado</option>
                                             <option value="2">Pago a Cuotas</option>
+                                            <option value="3">Venta en Mercadolibre</option>
                                             <!--       <option value="3">Pago a Credito</option> -->
                                         </select>
                                     </div>
@@ -165,13 +170,24 @@
 
                             <div class="p-3">
 
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button for="" class="btn pl-0 font-weight-bold">Total Sin descuento</button>
+                                <div class="row">
+                                    <div class="input-group col-md-6">
+                                        <div class="input-group-prepend">
+                                            <button for="" class="btn pl-0 font-weight-bold">Total Sin Comision</button>
+                                        </div>
+
+                                        <input id="total_libre" value="0" type="text" name="" class="form-control" readonly>
                                     </div>
 
-                                    <input id="total" value="0" type="text" name="" class="form-control" readonly>
+                                    <div class="input-group col-md-6">
+                                        <div class="input-group-prepend">
+                                            <button for="total" class="btn pl-0 font-weight-bold">Total Sin descuento</button>
+                                        </div>
+
+                                        <input id="total" value="0" type="text" name="" class="form-control" readonly>
+                                    </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="input-group mt-3 col-md-6">
                                         <div class="input-group-prepend">
@@ -185,7 +201,7 @@
                                             <button for="total_pagar" class="btn pl-0 font-weight-bold d-block text-right">Total Pagar</button>
                                         </div>
 
-                                        <input id="total_pagar" value="0" type="text" name=""  class="form-control">
+                                        <input id="total_pagar" value="0" type="text" name="" class="form-control">
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-end mt-3">

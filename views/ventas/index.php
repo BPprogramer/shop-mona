@@ -301,6 +301,18 @@
 
 
                     </div>
+                    <div class="col-md-6 pl-4">
+                        
+
+                    </div>
+                    <div class="col-md-6 pl-4">
+                        <div class="d-flex justify-content-between  border-bottom">
+                            <p class="my-2">Total Sin Comisión </p>
+                            <p class="my-2"><strong class="" id="total-sin-comision"></strong></p>
+                        </div>
+
+
+                    </div>
                    
                     
                     

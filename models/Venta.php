@@ -4,12 +4,13 @@ namespace Model;
 
 class  Venta extends ActiveRecord {
     protected static $tabla = 'ventas';
-    protected static $columnasDB = ['id', 'codigo','total', 'recaudo', 'costo', 'descuento', 'metodo_pago', 'estado', 'fecha', 'nombre_cliente','cedula_cliente','celular_cliente','direccion_cliente','email_cliente',  'vendedor_id', 'caja_id'];
+    protected static $columnasDB = ['id', 'codigo','total','total_factura', 'recaudo', 'costo', 'descuento', 'metodo_pago', 'estado', 'fecha', 'nombre_cliente','cedula_cliente','celular_cliente','direccion_cliente','email_cliente',  'vendedor_id', 'caja_id'];
 
 
     public $id;
     public $codigo;
     public $total;
+    public $total_factura;
     public $recaudo;
     public $costo;
     public $descuento;
@@ -32,6 +33,7 @@ class  Venta extends ActiveRecord {
         $this->id = $args['id'] ?? null;
         $this->codigo = $args['codigo'] ?? '';
         $this->total = $args['total'] ?? '';
+        $this->total_factura = $args['total_factura'] ?? '';
         $this->recaudo = $args['recaudo'] ?? '';
         $this->costo = $args['costo'] ?? '';
         $this->descuento = $args['descuento'] ?? '';

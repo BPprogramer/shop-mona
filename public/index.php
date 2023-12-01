@@ -166,3 +166,10 @@ $router->get('/api/egreso', [ApiEgresos::class, 'egreso']);
 $router->get('/api/inicio', [ApiInicio::class, 'index']);
 
 $router->comprobarRutas();
+
+
+/* total_factura es el total de una venta
+
+    total es el valor sobre el cual se calcula las ganancias por motivo de 
+    ahi es donde se le quita la comision cuando es por mercado libre
+*/

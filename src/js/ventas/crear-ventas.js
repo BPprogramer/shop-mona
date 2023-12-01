@@ -2,6 +2,7 @@
     // window.location.href = '/inicio'
     const seccionCrearVentas = document.querySelector('#seccion-crear-ventas')
     if (seccionCrearVentas) {
+     
         let ventaId;
         let clienteId = null;
         let productoObj = {
@@ -10,7 +11,7 @@
             cantidad: '',
             precio_compra: '',
             precio_venta: '',
-
+            precio:'',
             precio_original: '',
             valor_total: '',
             stock: ''
@@ -19,7 +20,8 @@
             total_sin_descuento: '',
             total_pagar: '',
             descuento: '',
-            costo: ''
+            costo: '',
+            total_libre:''
 
 
         }
@@ -38,6 +40,7 @@
 
 
         const totalInput = document.querySelector('#total');
+        const totalLibreInput = document.querySelector('#total_libre');
         const descuentoInput = document.querySelector('#descuento');
         const totalPagarInput = document.querySelector('#total_pagar');
         const medotodoPago = document.querySelector('#metodo_pago');
@@ -74,7 +77,7 @@
         consultarProductos();
 
         async function consultarProductos() {
-
+     
 
             try {
                 const respuesta = await fetch(`${location.origin}/api/productos-ventas`);
@@ -150,10 +153,10 @@
             if (pagoCuotas.classList.contains('d-none')) {
                 pagoCuotas.classList.remove('d-none');
             }
+           
 
 
-
-            if (medotodoPago.value == 2) {
+            if (medotodoPago.value != 1 ) {
 
                 abono.value = '';
                 saldo.value = valoresObj.total_pagar.toLocaleString('en');
@@ -238,6 +241,7 @@
             if (params.size == 1) {
                 ventaId = atob(params.get('id'));
                 consultarVenta();
+          
                 consultarCLientes();
 
 
@@ -273,9 +277,10 @@
                     nombre: productoVenta.nombre,
                     cantidad: productoVenta.cantidad,
                     precio_compra: productoVenta.precio_compra,
-                    precio_venta: productoVenta.precio,
+                    precio_venta: productoVenta.precio_factura,
+                    precio:productoVenta.precio,
                     precio_original: productoVenta.precio_venta,
-                    valor_total: productoVenta.precio * productoVenta.cantidad,
+                    valor_total: productoVenta.precio_factura * productoVenta.cantidad,
                     stock: parseFloat(productoVenta.stock) + parseFloat(productoVenta.cantidad)
 
                 }
@@ -296,7 +301,7 @@
 
             totalInput.value = total_sin_descuento.toLocaleString('en');
             descuentoInput.value = resultado.venta.descuento + "%";
-            totalPagarInput.value = parseFloat(resultado.venta.total).toLocaleString('en');
+            totalPagarInput.value = parseFloat(resultado.venta.total_factura).toLocaleString('en');
 
             if (venta.nombre_cliente != '' || venta.cedula_cliente != '' || venta.celular_cliente != '' || venta.direccion_cliente != '' || venta.nombre != undefined) {
                 contenedorCliente.classList.remove('d-none');
@@ -307,8 +312,15 @@
                 emailCliente.value = venta.email_cliente;
             }
 
-            if (venta.metodo_pago == 2) {
-                var optionToSelect = document.querySelector('#metodo_pago option[value="2"]');
+            if (venta.metodo_pago == 2 || venta.metodo_pago == 3) {
+                let optionToSelect = '';
+
+                if(venta.metodo_pago == 2){
+                    optionToSelect = document.querySelector('#metodo_pago option[value="2"]');
+                }else{
+                    optionToSelect = document.querySelector('#metodo_pago option[value="3"]');
+                }
+        
                 optionToSelect.selected = true;
                 abono.value = (parseFloat(venta.recaudo)).toLocaleString('en');
                 saldo.value = (venta.total - venta.recaudo).toLocaleString('en');
@@ -336,7 +348,7 @@
                     Swal.fire({
                         icon: 'error',
 
-                        text: 'Para las ventas a credito es necesario seleccionar un cliente que se encuentre registrado',
+                        text: 'Para las ventas a credito o de mercado libre es necesario seleccionar un cliente que se encuentre registrado',
 
                     })
                     return;
@@ -351,12 +363,15 @@
         }
         async function enviarInformacion() {
 
+        
+
             const datos = new FormData();
             if (ventaId) {
                 datos.append('id', ventaId);
             }
             datos.append('productosArray', JSON.stringify(productosArray));
-            datos.append('total', valoresObj.total_pagar);
+            datos.append('total_factura', valoresObj.total_pagar);
+            datos.append('total', valoresObj.total_libre);
 
             datos.append('costo', valoresObj.costo);
             datos.append('descuento', valoresObj.descuento);
@@ -390,9 +405,9 @@
             datos.append('email_cliente', emailCliente.value);
 
 
+       
 
-
-
+        
             let url;
             if (ventaId) {
                 url = `${location.origin}/api/editar-venta`;
@@ -400,7 +415,7 @@
                 url = `${location.origin}/api/crear-venta`;
             }
 
-            guardarVentaBtn.disabled = true;
+            // guardarVentaBtn.disabled = true;
             try {
 
                 const respuesta = await fetch(url, {
@@ -595,7 +610,7 @@
             const contenedorProductos = document.querySelector('#productosVenta');
             limpiarHtml(contenedorProductos);
             productosArray.forEach(producto => {
-                const { id, nombre, precio_venta, cantidad, valor_total, stock } = producto;
+                const { id, nombre, precio_venta,precio, cantidad, valor_total, stock } = producto;
 
                 const rowDiv = document.createElement('DIV');
                 rowDiv.classList.add('row', 'px-2');
@@ -687,10 +702,48 @@
                 group2Div.appendChild(inputCantidad);
                 col2Div.appendChild(group2Div);
 
-                //precio unitario
+                //precio sin comision para cuando se usa mercado libre
+            
+                const col5Div = document.createElement('DIV');
+                col5Div.classList.add('col-sm-2');
+                const group5Div = document.createElement('DIV');
+                group5Div.classList.add('input-group', 'mb-3');
+            
+                const prepend5Div = document.createElement('DIV');
+                prepend5Div.classList.add('input-group-prepend');
+                prepend5Div.innerHTML = `<span class="input-group-text bg-icono"> <i class="fas fa-dollar-sign text-azul"></i></i></span>`;
+
+                const inputPrecioLibre = document.createElement('INPUT');
+                inputPrecioLibre.type = 'text';
+                inputPrecioLibre.classList.add('form-control');
+                inputPrecioLibre.value = parseFloat(precio).toLocaleString('en');
+
+
+                 group5Div.appendChild(prepend5Div);
+                group5Div.appendChild(inputPrecioLibre);
+                col5Div.appendChild(group5Div);
+    
+                inputPrecioLibre.oninput = () => {
+                   
+
+                    const nuevo_precio_venta = formatearValor(inputPrecioLibre.value);
+                    inputPrecioLibre.value = nuevo_precio_venta;
+                    producto.precio = parseFloat((nuevo_precio_venta).replace(/,/g, ''));
+                    
+                    total_libre = 0;
+                    productosArray.forEach(producto=>{
+                        total_libre = total_libre +  producto.precio*producto.cantidad;
+                    })
+                    valoresObj.total_libre = total_libre;
+                    totalLibreInput.value =   total_libre.toLocaleString('en')            ;
+                }
+        
+
+
+                //precio unitario para factura
 
                 const col3Div = document.createElement('DIV');
-                col3Div.classList.add('col-sm-3');
+                col3Div.classList.add('col-sm-2');
 
                 const group3Div = document.createElement('DIV');
                 group3Div.classList.add('input-group', 'mb-3');
@@ -722,6 +775,8 @@
 
                     const nuevo_precio_venta = formatearValor(inputPrecio.value);
                     inputPrecio.value = nuevo_precio_venta;
+                    inputPrecioLibre.value = nuevo_precio_venta
+                    producto.precio = parseFloat((nuevo_precio_venta).replace(/,/g, ''));
                     modificarTotalPorProducto(inputPrecio.value, id, false)
                 }
                 inputPrecio.focus()
@@ -732,7 +787,7 @@
 
                 //precio cantidad
                 const col4Div = document.createElement('DIV');
-                col4Div.classList.add('col-sm-3');
+                col4Div.classList.add('col-sm-2');
 
                 const group4Div = document.createElement('DIV');
                 group4Div.classList.add('input-group', 'mb-3');
@@ -758,6 +813,7 @@
 
                 rowDiv.appendChild(col1Div);
                 rowDiv.appendChild(col2Div);
+                rowDiv.appendChild(col5Div);
                 rowDiv.appendChild(col3Div);
                 rowDiv.appendChild(col4Div);
 
@@ -787,23 +843,27 @@
             let total = 0; //valor a pagar con el precio de venta original
             let total_pagar = 0; //valor a pagar con modificaciones de precios 
             let total_costo = 0;
+            let total_libre = 0;
             productosArray.forEach(producto => {
 
                 total = total + producto.cantidad * producto.precio_original;
                 total_pagar = total_pagar + producto.cantidad * producto.precio_venta;
                 total_costo = total_costo + producto.cantidad * producto.precio_compra;
+                total_libre = total_libre + producto.cantidad * producto.precio;
             })
 
             const descuento = 100 - total_pagar * 100 / total;
             descuentoInput.value = !isNaN(Number(descuento.toFixed(2))) ? Number(descuento.toFixed(2)) + '%' : 0 + '%';
             totalInput.value = total.toLocaleString('en');
             totalPagarInput.value = total_pagar.toLocaleString('en');
+            totalLibreInput.value = total_libre.toLocaleString('en');
 
             //llenamos el objeto con la informacion del pago de la venta
             valoresObj.total_sin_descuento = total;
             valoresObj.total_pagar = total_pagar;
             valoresObj.descuento = !isNaN(Number(descuento.toFixed(2))) ? Number(descuento.toFixed(2)) : 0;
             valoresObj.costo = total_costo;
+            valoresObj.total_libre = total_libre;
 
 
         }
@@ -852,7 +912,8 @@
                         return {
                             ...producto,
                             cantidad: parametro,
-                            valor_total: parametro * producto.precio_venta
+                            valor_total: parametro * producto.precio_venta,
+
                         }
 
                     }
@@ -928,6 +989,7 @@
                         cantidad: 1,
                         precio_compra,
                         precio_venta,
+                        precio:parseFloat(precio_venta),
                         precio_original: parseFloat(precio_venta),
                         valor_total: precio_venta,
                         stock
@@ -992,18 +1054,18 @@
                 opcionDisabled.textContent = '--seleccione un cliente--';
                 opcionDisabled.value = "0";
 
-                selectClientes.appendChild(opcionDisabled);
+               
 
 
-
+        
                 resultado.forEach(cliente => {
-
+              
                     const opcion = document.createElement('OPTION');
                     opcion.value = cliente.id;
                     opcion.textContent = cliente.nombre;
 
                     if (cliente.id == clienteId) {
-
+                      
                         opcion.selected = true;
                     }
 
