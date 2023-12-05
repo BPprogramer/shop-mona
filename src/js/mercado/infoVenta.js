@@ -1,5 +1,5 @@
 (function () {
-    const ventas = document.querySelector('#ventas');
+    const ventas = document.querySelector('#mercadolibre');
     if (ventas) {
 
         $('#tabla').on('click', '#info', function (e) {
