@@ -11,7 +11,7 @@
        
             try {
                 const respuesta = await fetch(`${location.origin}/api/pagos-auto`);
-                const resultado = await respuesta.json();
+                // const resultado = await respuesta.json();
         
                
             } catch (error) {
