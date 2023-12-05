@@ -13,6 +13,7 @@ use Controllers\ApiIngresos;
 use Controllers\ApiUsuarios;
 use Controllers\ApiProductos;
 use Controllers\ApiCategorias;
+use Controllers\ApiMercadoLibre;
 use Controllers\ApiProveedores;
 use Controllers\ApiReportes;
 use Controllers\AvastesimientoController;
@@ -26,6 +27,7 @@ use Controllers\UsuariosController;
 use Controllers\DashboardController;
 use Controllers\ProductosController;
 use Controllers\CategoriasController;
+use Controllers\MercadoLIbreController;
 use Controllers\ProveedoresController;
 use Controllers\TransaccionesController;
 
@@ -51,6 +53,7 @@ $router->get('/fiados',[FiadosController::class, 'index']);
 $router->get('/ingresos',[IngresosController::class, 'index']);
 $router->get('/egresos',[EgresosController::class, 'index']);
 $router->get('/compras',[AvastesimientoController::class, 'index']);
+$router->get('/mercadolibre',[MercadoLIbreController::class, 'index']);
 
 /* VENTAS CONTROLLERS */
 
@@ -126,6 +129,10 @@ $router->post('/api/venta/eliminar',[ApiVentas::class, 'eliminar']);
 $router->get('/api/productos-ventas',[ApiVentas::class, 'productos']);
 $router->get('/api/clientes-ventas',[ApiVentas::class, 'clientes']);
 $router->get('/api/codigo-venta',[ApiVentas::class, 'codigoVenta']);
+
+/* api a las ventas por mercado libre */
+$router->get('/api/mercadolibre',[ApiMercadoLibre::class, 'index']);
+$router->get('/api/pagos-auto',[ApiMercadoLibre::class, 'pagosAuto']);
 
 /* API ereporte de ventas */
 $router->post('/api/info-general',[ApiReportes::class, 'info']);

@@ -68,6 +68,20 @@
                                     <span class="description-text">FIADOS</span>
                                 </div>
                             </div>
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
+
+                                    <h5 class="description-header"  id="inicio_dinero_mercado_libre">$0</h5>
+                                    <span class="description-text">Mercado Libre</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-6">
+                                <div class="description-block border-right">
+
+                                    <h5 class="description-header"  id="inicio_dinero_pendiente_mercado_libre">$0</h5>
+                                    <span class="description-text">Mercado Libre Pendientes</span>
+                                </div>
+                            </div>
 
                         </div>
                     </div>

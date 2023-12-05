@@ -46,6 +46,24 @@ class ApiInicio{
         }else{
             $info['ingresos_reales'] = 0;
         }
+        $mercado_libre = Venta::whereArray(['metodo_pago'=>3]);
+        $dinero_mercado_libre = 0;
+        $dinero_pendiente_mercado_libre = 0;
+        if($mercado_libre){
+            foreach($mercado_libre as $venta){
+                if($venta->estado==1){
+                    $dinero_mercado_libre = $dinero_mercado_libre+$venta->recaudo;
+                }else{
+                    $dinero_pendiente_mercado_libre = $dinero_pendiente_mercado_libre+$venta->total;
+                }
+            }
+            $info['dinero_mercado_libre'] = $dinero_mercado_libre;
+            $info['dinero_pendiente_mercado_libre'] = $dinero_pendiente_mercado_libre;
+           
+        }else{
+            $info['dinero_mercado_libre'] = 0;
+            $info['dinero_pendiente_mercado_libre'] = 0;
+        }
 
         $info['ganancias_reales'] = $info['ingresos_reales'] -  $info['costos'];
         $info['fiados'] = $info['ingresos'] -  $info['ingresos_reales'];
@@ -72,7 +90,11 @@ class ApiInicio{
             'numero_pagos'=>number_format($numero_pagos['total']),
             'numero_cajas'=>number_format($numero_cajas['total']),
             'numero_productos'=>number_format($numero_productos['total']),
-            'numero_clientes'=>number_format($numero_clientes['total'])
+            'numero_clientes'=>number_format($numero_clientes['total']),
+            'dinero_mercado_libre'=>number_format($info['dinero_mercado_libre']),
+            'dinero_pendiente_mercado_libre'=>number_format($info['dinero_pendiente_mercado_libre'])
+       
+            
 
         ];
 

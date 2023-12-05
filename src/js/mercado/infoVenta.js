@@ -1,6 +1,6 @@
 (function () {
-    const mercadolibre = document.querySelector('#mercadolibre');
-    if (mercadolibre) {
+    const ventas = document.querySelector('#ventas');
+    if (ventas) {
 
         $('#tabla').on('click', '#info', function (e) {
             const ventaId = e.currentTarget.dataset.ventaId;
@@ -50,7 +50,7 @@
                 metodoVenta.textContent = 'Fiado'
             }
             if(venta.metodo_pago==3){
-                metodoVenta.textContent = 'Mercad Libre'
+                metodoVenta.textContent = 'Mercado Libre'
             }
             if(venta.metodo_pago==1){
                 metodoVenta.textContent = 'De Contado'

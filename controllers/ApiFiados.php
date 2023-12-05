@@ -227,8 +227,8 @@ use Model\ProductosVenta;
                 echo json_encode(['type' => 'success', 'msg' => 'Pago creado exitosamente']);
                 return;
             } catch (Exception $e) {
-                debuguear($e);
-                $db->rollback();
+             
+                $db->rollback();s
                 echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
                 return;
             }

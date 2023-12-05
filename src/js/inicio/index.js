@@ -14,6 +14,9 @@
         const numero_cajas = document.querySelector('#inicio_numero_cajas')
         const numero_productos = document.querySelector('#inicio_numero_productos')
         const numero_clientes = document.querySelector('#inicio_numero_clientes')
+        const dinero_mercado_libre = document.querySelector('#inicio_dinero_mercado_libre')
+        const dinero_pendiente_mercado_libre = document.querySelector('#inicio_dinero_pendiente_mercado_libre')
+        
 
         cargarInformacion();
 
@@ -32,6 +35,8 @@
             numero_cajas.textContent = resultado.numero_cajas
             numero_productos.textContent = resultado.numero_productos
             numero_clientes.textContent = resultado.numero_clientes
+            dinero_mercado_libre.textContent = resultado.dinero_mercado_libre
+            dinero_pendiente_mercado_libre.textContent = resultado.dinero_pendiente_mercado_libre
             
         }
 

@@ -155,6 +155,7 @@ class ActiveRecord {
         $resultado = self::consultarSQL($query);
         return array_shift( $resultado ) ;
     }
+ 
 
     //busqueda where con multiples opciones
     public static function whereArray($array = []) {
