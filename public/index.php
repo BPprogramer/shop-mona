@@ -27,7 +27,7 @@ use Controllers\UsuariosController;
 use Controllers\DashboardController;
 use Controllers\ProductosController;
 use Controllers\CategoriasController;
-use Controllers\MercadoLIbreController;
+use Controllers\MercadoLibreController;
 use Controllers\ProveedoresController;
 use Controllers\TransaccionesController;
 
@@ -53,7 +53,7 @@ $router->get('/fiados',[FiadosController::class, 'index']);
 $router->get('/ingresos',[IngresosController::class, 'index']);
 $router->get('/egresos',[EgresosController::class, 'index']);
 $router->get('/compras',[AvastesimientoController::class, 'index']);
-$router->get('/mercadolibre',[MercadoLIbreController::class, 'index']);
+$router->get('/mercadolibre',[MercadoLibreController::class, 'index']);
 
 /* VENTAS CONTROLLERS */
 
