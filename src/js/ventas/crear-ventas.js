@@ -363,7 +363,8 @@
         }
         async function enviarInformacion() {
 
-        
+     
+          
 
             const datos = new FormData();
             if (ventaId) {

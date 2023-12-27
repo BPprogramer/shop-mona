@@ -28,7 +28,7 @@
                     body:datos
                  })
                  const resultado = await respuesta.json();
-                 console.log(resultado)
+              
                  eliminarToastAnterior();
                
                  if(resultado.type=='error'){

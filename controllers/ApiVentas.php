@@ -118,7 +118,7 @@ class ApiVentas
         $venta = new Venta();
         $venta->sincronizar($_POST);
 
-        
+
 
         $venta->formatearDatosFloat();
         $venta->caja_id = $caja->id ;
@@ -221,7 +221,7 @@ class ApiVentas
         }
         $fiados_asociados = PagoCuota::where('venta_id', $id);
   
-        if(!$fiados_asociados){
+        if($fiados_asociados){
             echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
             return;
         }

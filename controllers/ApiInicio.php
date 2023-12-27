@@ -18,7 +18,7 @@ class ApiInicio{
         }
    
         $info = [];
-        $ingresos = Venta::total('total');
+        $ingresos = Venta::total('recaudo');
         if($ingresos){
             $info['ingresos'] = $ingresos['total'];
         }else{
