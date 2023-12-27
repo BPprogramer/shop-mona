@@ -1,13 +1,15 @@
 (function () {
     const mercadolibre = document.querySelector('#mercadolibre');
-    if (mercadolibre) {
+    const ventas = document.querySelector('#ventas');
+    if (mercadolibre || ventas) {
 
         $('#tabla').on('click', '#info', function (e) {
             const ventaId = e.currentTarget.dataset.ventaId;
-            
+ 
             consultarInfoVenta(ventaId);
         })
         async function consultarInfoVenta(id) {
+         
             $('#modal-info').modal('show');
 
             const url = `${location.origin}/api/venta?id=${id}`;
