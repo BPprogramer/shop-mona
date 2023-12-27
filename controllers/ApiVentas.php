@@ -118,7 +118,7 @@ class ApiVentas
         $venta = new Venta();
         $venta->sincronizar($_POST);
 
-
+  
 
         $venta->formatearDatosFloat();
         $venta->caja_id = $caja->id ;
@@ -157,7 +157,7 @@ class ApiVentas
               
             }
 
-            if($venta->metodo_pago == 2 || $venta->metodo_pago == 3){
+            if($venta->metodo_pago == 2){
 
                 $numero_pago = 200000;
                 $ultima_cuota = Cuota::get(1);
@@ -314,7 +314,7 @@ class ApiVentas
       
             
       
-            if($venta_actual->metodo_pago ==2 || $venta_actual->metodo_pago ==3){
+            if($venta_actual->metodo_pago ==2 ){
 
                 $numero_pago = 200000;
                 $ultima_cuota = Cuota::get(1);
