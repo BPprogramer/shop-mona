@@ -38,16 +38,16 @@
                 }
             });
             
-            $.ajax({
-                url:'/api/mercadolibre',
-                dataType:'json',
-                success:function(req){
-                    console.log(req)
-                },
-                error:function(error){
-                    console.log(error.resposeText)
-                }
-            })
+            // $.ajax({
+            //     url:'/api/mercadolibre',
+            //     dataType:'json',
+            //     success:function(req){
+            //         console.log(req)
+            //     },
+            //     error:function(error){
+            //         console.log(error.resposeText)
+            //     }
+            // })
        
         }  
         

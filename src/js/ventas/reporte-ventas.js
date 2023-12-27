@@ -27,7 +27,7 @@
 
         function llenarIputFecha(){
             const fecha_actual = new Date();
-            fecha_actual.setMonth(fecha_actual.getMonth() - 1);
+            fecha_actual.setMonth(fecha_actual.getMonth());
             const fecha_actual_formateada = fecha_actual.toISOString().slice(0,10);
             fecha.value = fecha_actual_formateada
      
