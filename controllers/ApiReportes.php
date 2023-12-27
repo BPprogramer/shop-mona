@@ -18,7 +18,7 @@ class ApiReportes{
         $fecha = $_POST['fecha']." 00:00:00";
       
         $info = [];
-        $ingresos = Venta::total('total', 'fecha',$fecha);
+        $ingresos = Venta::total('recaudo', 'fecha',$fecha);
         if($ingresos){
             $info['ingresos'] = $ingresos['total'];
         }else{
