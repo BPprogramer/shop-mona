@@ -125,7 +125,7 @@
                 const productoSeleccionado = listadoProductos.filter(producto =>{
 
                     
-                    return producto.codigo == e.target.value
+                    return producto.codigo.toLowerCase() == e.target.value.toLowerCase()
                 })
                 if(productoSeleccionado.length>0){
                 
@@ -343,7 +343,7 @@
                 return;
             }
 
-            if (medotodoPago.value != 1) {
+            if (medotodoPago.value == 2) {
                 if (selectClientes.value == 0) {
                     Swal.fire({
                         icon: 'error',
@@ -491,9 +491,11 @@
             selectClientes.val("0").trigger('change.select2');
 
 
+
             medotodoPago.innerHTML = `
                 <option value="1">Pago e Contado</option>
                 <option value="2">Pago a Cuotas</option>
+                <option value="2">Mercado Libre</option>
             `
 
             cantidadPagar.value = '';
