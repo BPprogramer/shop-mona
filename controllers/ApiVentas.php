@@ -418,7 +418,7 @@ class ApiVentas
 
         //consultamos pagos asociasdos a la venta que se quiere eliminar
         //si existen pagos no debe dejar eliminar
-        if($venta->metodo_pago ==2 || $venta->metodo_pago ==3){
+        if($venta->metodo_pago ==2 ){
             $fiados_asociados = PagoCuota::where('venta_id', $venta->id);
             if(!$fiados_asociados){
                 echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
@@ -460,7 +460,7 @@ class ApiVentas
             $productos_venta->eliminarWhere('venta_id', $id);
      
             
-            if($venta->metodo_pago ==2 || $venta->metodo_pago ==3){
+            if($venta->metodo_pago ==2){
                 $pago_cuotas_actual = PagoCuota::where('venta_id', $venta->id);
                 //$cuota_actual = Cuota::find($pago_cuotas_actual->cuota_id);
       
