@@ -206,13 +206,18 @@ class ApiVentas
 
 
     public static function revisarPagosAsociados(){
+
+     
         if(!is_admin()){
             echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, porfavor intente nuevamente']);
             return;
         } 
+
+
         
         $id = $_POST['id'];
         $id = filter_var($id, FILTER_VALIDATE_INT);
+  
       
         if(!$id){
        
@@ -220,17 +225,26 @@ class ApiVentas
             return;
         }
         $fiados_asociados = PagoCuota::where('venta_id', $id);
-  
+    
+        // if(!$fiados_asociados){
+        //     echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
+        //     return;
+        // }
+   
+    
+        $pagos_asociados=[];
+    
         if($fiados_asociados){
-            echo json_encode(['type'=>'error', 'msg'=>'Hubo un error, Intenta nuevamente']);
-            return;
+         
+            $pagos_asociados = Cuota::whereArray(['pago_cuotas_id'=>$fiados_asociados->id]);
+            if(count($pagos_asociados)>0){
+                echo json_encode(['type'=>'error', 'msg'=>'Tiene pagos asociados por lo que no puede editar la venta']);
+                return;
+            }
         }
-
-        $pagos_asociados = Cuota::whereArray(['pago_cuotas_id'=>$fiados_asociados->id]);
-        if(count($pagos_asociados)>0){
-            echo json_encode(['type'=>'error', 'msg'=>'Tiene pagos asociados por lo que no puede editar la venta']);
-            return;
-        }
+      
+  
+        
         echo json_encode(['type'=>'success', 'msg'=>'redireccionando']);
         return;
     }

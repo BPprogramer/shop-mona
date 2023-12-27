@@ -6,10 +6,10 @@
         $('#tabla').on('click', '#editar', function(e){
             id=e.currentTarget.dataset.ventaId;
          
-
+    
             revisarPagosAsociados(id);
 
-           
+      
             // accionesModal();
         })
         $('#tabla').on('click', '#eliminar', function(e){
@@ -19,6 +19,7 @@
     
 
         async function revisarPagosAsociados(id){
+    
             const datos = new FormData();
             datos.append('id', id);
             const url = `${location.origin}/api/revisar-venta`;
@@ -27,8 +28,9 @@
                     method:'POST',
                     body:datos
                  })
+      
                  const resultado = await respuesta.json();
-              
+          
                  eliminarToastAnterior();
                
                  if(resultado.type=='error'){
