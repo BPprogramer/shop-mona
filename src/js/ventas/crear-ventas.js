@@ -622,7 +622,7 @@
                 //Producto
 
                 const col1Div = document.createElement('DIV');
-                col1Div.classList.add('col-sm-4');
+                col1Div.classList.add('col-sm-3');
 
                 const group1Div = document.createElement('DIV');
                 group1Div.classList.add('input-group', 'mb-3');
@@ -644,10 +644,36 @@
                 inputNombre.value = nombre;
                 inputNombre.dataset.productoId = id;
 
+                
+                const col7Div = document.createElement('DIV');
+                col7Div.classList.add('col-sm-1');
+
+                const group7Div = document.createElement('DIV');
+                group7Div.classList.add('input-group', 'mb-3');
+
+                const prepend7Div = document.createElement('DIV');
+                prepend7Div.classList.add('input-group-prepend');
+
+
+                prepend7Div.innerHTML = `<span class="input-group-text bg-icono"> <i class="fas fa-hashtag text-azul"></i></i></span>`;
+             
+      
+                const inputStock = document.createElement('INPUT');
+                inputStock.type = 'text';
+                inputStock.classList.add('form-control');
+                inputStock.readOnly = true;
+                inputStock.value = stock;
+                inputStock.dataset.productoId = id;
+            
 
                 group1Div.appendChild(prepend1Div);
                 group1Div.appendChild(inputNombre);
                 col1Div.appendChild(group1Div);
+                group7Div.appendChild(prepend7Div);
+                group7Div.appendChild(inputStock);
+            
+                
+                col7Div.appendChild(group7Div);
 
                 //cantidad
 
@@ -815,6 +841,7 @@
 
 
                 rowDiv.appendChild(col1Div);
+                rowDiv.appendChild(col7Div);
                 rowDiv.appendChild(col2Div);
                 rowDiv.appendChild(col5Div);
                 rowDiv.appendChild(col3Div);
