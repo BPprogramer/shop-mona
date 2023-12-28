@@ -2,7 +2,7 @@
     // window.location.href = '/inicio'
     const seccionCrearVentas = document.querySelector('#seccion-crear-ventas')
     if (seccionCrearVentas) {
-     
+
         let ventaId;
         let clienteId = null;
         let productoObj = {
@@ -11,7 +11,7 @@
             cantidad: '',
             precio_compra: '',
             precio_venta: '',
-            precio:'',
+            precio: '',
             precio_original: '',
             valor_total: '',
             stock: ''
@@ -21,7 +21,7 @@
             total_pagar: '',
             descuento: '',
             costo: '',
-            total_libre:''
+            total_libre: ''
 
 
         }
@@ -77,14 +77,14 @@
         consultarProductos();
 
         async function consultarProductos() {
-     
+
 
             try {
                 const respuesta = await fetch(`${location.origin}/api/productos-ventas`);
                 const resultado = await respuesta.json();
                 listadoProductos = resultado;
                 productoPorCodigo(listadoProductos);
-               
+
 
                 // llenarPrimerOption(selectCategorias);
                 const opcionDisabled = document.createElement('OPTION');
@@ -118,23 +118,54 @@
 
         }
 
-        function  productoPorCodigo(listadoProductos){
-            
-            codigoProducto.addEventListener('input',function(e){
-                e.preventDefault();
-                const productoSeleccionado = listadoProductos.filter(producto =>{
+        function productoPorCodigo(listadoProductos) {
 
-                    
-                    return producto.codigo.toLowerCase() == e.target.value.toLowerCase()
-                })
-                if(productoSeleccionado.length>0){
-                
-                    consultarInfoProducto(productoSeleccionado[0].id)
-                    e.target.value = '';
+            codigoProducto.addEventListener('input', function (e) {
+                e.preventDefault();
+
+                const miString = e.target.value
+
+                const primerCaracter = miString.charAt(0);
+
+                // Verificar si el primer carácter es un número
+                if (!isNaN(parseInt(primerCaracter))) {
+                    const productoSeleccionado = listadoProductos.filter(producto => {
+
+
+                        return producto.codigo.toLowerCase() == e.target.value.toLowerCase()
+                    })
+
+
+                    if (productoSeleccionado.length > 0) {
+
+                        consultarInfoProducto(productoSeleccionado[0].id)
+                        e.target.value = '';
+                    }
+                } else {
+
+                    codigoProducto.addEventListener('keydown', (e) => {
+                        if (e.keyCode == 13) {
+                            const productoSeleccionado = listadoProductos.filter(producto => {
+
+
+                                return producto.codigo.toLowerCase() == e.target.value.toLowerCase()
+                            })
+
+
+                            if (productoSeleccionado.length > 0) {
+
+                                consultarInfoProducto(productoSeleccionado[0].id)
+                                e.target.value = '';
+                            }
+                        }
+                    })
                 }
+
+
+
             })
         }
-        
+
 
 
 
@@ -153,10 +184,10 @@
             if (pagoCuotas.classList.contains('d-none')) {
                 pagoCuotas.classList.remove('d-none');
             }
-           
 
 
-            if (medotodoPago.value != 1 ) {
+
+            if (medotodoPago.value != 1) {
 
                 abono.value = '';
                 saldo.value = valoresObj.total_pagar.toLocaleString('en');
@@ -241,7 +272,7 @@
             if (params.size == 1) {
                 ventaId = atob(params.get('id'));
                 consultarVenta();
-          
+
                 consultarCLientes();
 
 
@@ -278,7 +309,7 @@
                     cantidad: productoVenta.cantidad,
                     precio_compra: productoVenta.precio_compra,
                     precio_venta: productoVenta.precio_factura,
-                    precio:productoVenta.precio,
+                    precio: productoVenta.precio,
                     precio_original: productoVenta.precio_venta,
                     valor_total: productoVenta.precio_factura * productoVenta.cantidad,
                     stock: parseFloat(productoVenta.stock) + parseFloat(productoVenta.cantidad)
@@ -315,12 +346,12 @@
             if (venta.metodo_pago == 2 || venta.metodo_pago == 3) {
                 let optionToSelect = '';
 
-                if(venta.metodo_pago == 2){
+                if (venta.metodo_pago == 2) {
                     optionToSelect = document.querySelector('#metodo_pago option[value="2"]');
-                }else{
+                } else {
                     optionToSelect = document.querySelector('#metodo_pago option[value="3"]');
                 }
-        
+
                 optionToSelect.selected = true;
                 abono.value = (parseFloat(venta.recaudo)).toLocaleString('en');
                 saldo.value = (venta.total - venta.recaudo).toLocaleString('en');
@@ -363,8 +394,8 @@
         }
         async function enviarInformacion() {
 
-     
-          
+
+
 
             const datos = new FormData();
             if (ventaId) {
@@ -406,9 +437,9 @@
             datos.append('email_cliente', emailCliente.value);
 
 
-       
 
-        
+
+
             let url;
             if (ventaId) {
                 url = `${location.origin}/api/editar-venta`;
@@ -613,7 +644,7 @@
             const contenedorProductos = document.querySelector('#productosVenta');
             limpiarHtml(contenedorProductos);
             productosArray.forEach(producto => {
-                const { id, nombre, precio_venta,precio, cantidad, valor_total, stock } = producto;
+                const { id, nombre, precio_venta, precio, cantidad, valor_total, stock } = producto;
 
                 const rowDiv = document.createElement('DIV');
                 rowDiv.classList.add('row', 'px-2');
@@ -644,7 +675,7 @@
                 inputNombre.value = nombre;
                 inputNombre.dataset.productoId = id;
 
-                
+
                 const col7Div = document.createElement('DIV');
                 col7Div.classList.add('col-sm-1');
 
@@ -656,23 +687,23 @@
 
 
                 prepend7Div.innerHTML = `<span class="input-group-text bg-icono"> <i class="fas fa-hashtag text-azul"></i></i></span>`;
-             
-      
+
+
                 const inputStock = document.createElement('INPUT');
                 inputStock.type = 'text';
                 inputStock.classList.add('form-control');
                 inputStock.readOnly = true;
                 inputStock.value = stock;
                 inputStock.dataset.productoId = id;
-            
+
 
                 group1Div.appendChild(prepend1Div);
                 group1Div.appendChild(inputNombre);
                 col1Div.appendChild(group1Div);
                 group7Div.appendChild(prepend7Div);
                 group7Div.appendChild(inputStock);
-            
-                
+
+
                 col7Div.appendChild(group7Div);
 
                 //cantidad
@@ -732,12 +763,12 @@
                 col2Div.appendChild(group2Div);
 
                 //precio sin comision para cuando se usa mercado libre
-            
+
                 const col5Div = document.createElement('DIV');
                 col5Div.classList.add('col-sm-2');
                 const group5Div = document.createElement('DIV');
                 group5Div.classList.add('input-group', 'mb-3');
-            
+
                 const prepend5Div = document.createElement('DIV');
                 prepend5Div.classList.add('input-group-prepend');
                 prepend5Div.innerHTML = `<span class="input-group-text bg-icono"> <i class="fas fa-dollar-sign text-azul"></i></i></span>`;
@@ -748,25 +779,25 @@
                 inputPrecioLibre.value = parseFloat(precio).toLocaleString('en');
 
 
-                 group5Div.appendChild(prepend5Div);
+                group5Div.appendChild(prepend5Div);
                 group5Div.appendChild(inputPrecioLibre);
                 col5Div.appendChild(group5Div);
-    
+
                 inputPrecioLibre.oninput = () => {
-                   
+
 
                     const nuevo_precio_venta = formatearValor(inputPrecioLibre.value);
                     inputPrecioLibre.value = nuevo_precio_venta;
                     producto.precio = parseFloat((nuevo_precio_venta).replace(/,/g, ''));
-                    
+
                     total_libre = 0;
-                    productosArray.forEach(producto=>{
-                        total_libre = total_libre +  producto.precio*producto.cantidad;
+                    productosArray.forEach(producto => {
+                        total_libre = total_libre + producto.precio * producto.cantidad;
                     })
                     valoresObj.total_libre = total_libre;
-                    totalLibreInput.value =   total_libre.toLocaleString('en')            ;
+                    totalLibreInput.value = total_libre.toLocaleString('en');
                 }
-        
+
 
 
                 //precio unitario para factura
@@ -1008,7 +1039,7 @@
             try {
                 const respuesta = await fetch(`${location.origin}/api/producto?id=${id}`);
                 const resultado = await respuesta.json();
-             
+
 
 
                 if (resultado.stock > 0) {
@@ -1019,7 +1050,7 @@
                         cantidad: 1,
                         precio_compra,
                         precio_venta,
-                        precio:parseFloat(precio_venta),
+                        precio: parseFloat(precio_venta),
                         precio_original: parseFloat(precio_venta),
                         valor_total: precio_venta,
                         stock
@@ -1084,18 +1115,18 @@
                 opcionDisabled.textContent = '--seleccione un cliente--';
                 opcionDisabled.value = "0";
 
-               
 
 
-        
+
+
                 resultado.forEach(cliente => {
-              
+
                     const opcion = document.createElement('OPTION');
                     opcion.value = cliente.id;
                     opcion.textContent = cliente.nombre;
 
                     if (cliente.id == clienteId) {
-                      
+
                         opcion.selected = true;
                     }
 
