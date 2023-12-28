@@ -21,7 +21,7 @@
         cargarInformacion();
 
         function mostrarInfo(resultado){
-            console.log(resultado)
+      
             ingresos.textContent = resultado.ingresos
             ganancias.textContent = resultado.ganancias
             costos.textContent = resultado.costos

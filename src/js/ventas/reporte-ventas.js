@@ -26,11 +26,16 @@
         llenarIputFecha();
 
         function llenarIputFecha(){
-            const fecha_actual = new Date();
-            fecha_actual.setMonth(fecha_actual.getMonth());
-            const fecha_actual_formateada = fecha_actual.toISOString().slice(0,10);
-            fecha.value = fecha_actual_formateada
-     
+            const fecha_actual_utc = new Date();
+
+            // Ajustar al huso horario de Colombia (UTC-5)
+            const fecha_actual_colombia = new Date(fecha_actual_utc.getTime() - (5 * 60 * 60 * 1000));
+        
+            // Formatear la fecha y asignarla al input
+            const fecha_actual_formateada = fecha_actual_colombia.toISOString().slice(0, 10);
+            fecha.value = fecha_actual_formateada;
+        
+            // Cargar información con la fecha ajustada
             cargarInformacion(fecha.value);
         }
 
