@@ -125,10 +125,12 @@
 
                 const miString = e.target.value
 
-                const primerCaracter = miString.charAt(0);
+                //const primerCaracter = miString.charAt(0);
+                const primerCaracter = miString
 
                 // Verificar si el primer carácter es un número
-                if (!isNaN(parseInt(primerCaracter))) {
+                //if (!isNaN(parseInt(primerCaracter))) {
+                if (!(/[^0-9]/.test(primerCaracter))) {
                     const productoSeleccionado = listadoProductos.filter(producto => {
 
 
