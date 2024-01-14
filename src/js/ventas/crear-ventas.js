@@ -375,7 +375,7 @@
                 })
                 return;
             }
-
+         
             if (medotodoPago.value == 2) {
                 if (selectClientes.value == 0) {
                     Swal.fire({
@@ -529,7 +529,7 @@
             medotodoPago.innerHTML = `
                 <option value="1">Pago e Contado</option>
                 <option value="2">Pago a Cuotas</option>
-                <option value="2">Mercado Libre</option>
+                <option value="3">Mercado Libre</option>
             `
 
             cantidadPagar.value = '';
