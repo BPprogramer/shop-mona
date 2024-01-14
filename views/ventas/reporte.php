@@ -40,17 +40,18 @@
                             <div class="col-sm-3 col-6">
                                 <div class="description-block border-right">
 
-                                    <h5 class="description-header" id="reporte_ganancias">$0</h5>
-                                    <span class="description-text">GANANCIAS</span>
+                                    <h5 class="description-header" id="reporte_costos">$0</h5>
+                                    <span class="description-text">COSTOS</span>
                                 </div>
                             </div>
                             <div class="col-sm-3 col-6">
                                 <div class="description-block border-right">
 
-                                    <h5 class="description-header" id="reporte_costos">$0</h5>
-                                    <span class="description-text">COSTOS</span>
+                                    <h5 class="description-header" id="reporte_ganancias">$0</h5>
+                                    <span class="description-text">GANANCIAS</span>
                                 </div>
                             </div>
+                          
                             <div class="col-sm-3 col-6">
                                 <div class="description-block border-right">
 
@@ -65,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+       <!--  <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-footer">
@@ -97,7 +98,7 @@
 
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </section>
 <section class="content">

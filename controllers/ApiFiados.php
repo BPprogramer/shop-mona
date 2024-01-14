@@ -197,6 +197,7 @@ use Model\ProductosVenta;
                             $sobrante = $sobrante - $pago;
                             $venta->recaudo = $venta->total;
                             $venta->estado = 1;
+                            
 
                             $cuota->saldo = 0;
                             $cuota->monto = $pago;
@@ -213,6 +214,7 @@ use Model\ProductosVenta;
                         }
     
                         $caja->numero_transacciones = $caja->numero_transacciones + 1;
+                        $venta->fecha = date('Y-m-d H:i:s');
                         $venta->guardar();
                         $cuota->guardar();
                         $caja->guardar();

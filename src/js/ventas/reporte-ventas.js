@@ -1,13 +1,14 @@
 (function(){
 
+  
     const reporte = document.querySelector('#reporte');
     if(reporte){
         const ingresos = document.querySelector('#reporte_ingresos')
         const ganancias = document.querySelector('#reporte_ganancias')
         const costos = document.querySelector('#reporte_costos')
         const inventario = document.querySelector('#reporte_inventario')
-        const ingresos_reales = document.querySelector('#reporte_ingresos_reales')
-        const ganancias_reales = document.querySelector('#reporte_ganancias_reales')
+        // const ingresos_reales = document.querySelector('#reporte_ingresos_reales')
+        // const ganancias_reales = document.querySelector('#reporte_ganancias_reales')
         const dinero_fiados = document.querySelector('#reporte_dinero_fiados')
         const numero_ventas = document.querySelector('#reporte_numero_ventas')
         const numero_fiados = document.querySelector('#reporte_numero_fiados')
@@ -43,13 +44,13 @@
 
         function mostrarInfo(resultado){
    
-            ingresos.textContent = resultado.ingresos
+            ingresos.textContent = resultado.ingresos_totales
             ganancias.textContent = resultado.ganancias
             costos.textContent = resultado.costos
-            inventario.textContent = resultado.inventario
-            ingresos_reales.textContent = resultado.ingresos_reales
-            ganancias_reales.textContent = resultado.ganancias_reales
-            dinero_fiados.textContent = resultado.fiados
+            inventario.textContent = resultado.total_inventario
+            // ingresos_reales.textContent = resultado.ingresos_reales
+            // ganancias_reales.textContent = resultado.ganancias_reales
+            // dinero_fiados.textContent = resultado.fiados
             numero_ventas.textContent = resultado.numero_ventas
             numero_fiados.textContent = resultado.numero_fiados
             numero_pagos.textContent = resultado.numero_pagos
@@ -71,7 +72,7 @@
                     body:datos
                 });
                 const resultado = await respuesta.json();
-
+                console.log(resultado)
                 // console.log(resultado);
                 mostrarInfo(resultado);
             } catch (error) {

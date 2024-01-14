@@ -92,14 +92,19 @@ class ApiMercadoLibre
             try {
 
                 foreach ($ventas_mercado_libre as $venta) {
-                    $diferenciaEnDias = floor((strtotime(date("Y-m-d H:i:s")) - strtotime($venta->fecha)) / (60 * 60 * 24));
-                    if ($diferenciaEnDias >= 21) {
-                        $venta->caja_id = $caja->id;
-                        $venta->recaudo = $venta->total;
-                        $venta->estado = 1;
-                        $venta->guardar();
-                
-                    }
+                    // if($venta==0){
+                        $diferenciaEnDias = floor((strtotime(date("Y-m-d H:i:s")) - strtotime($venta->fecha)) / (60 * 60 * 24));
+                        
+                        if ($diferenciaEnDias >= 21) {
+                            $venta->caja_id = $caja->id;
+                            $venta->recaudo = $venta->total;
+                            $venta->estado = 1;
+                            $venta->fecha = date('Y-m-d H:i:s');
+                            $venta->guardar();
+                    
+                        }
+                    // }
+                    
                 }
                 $db->commit();
                 return;
