@@ -1,3 +1,4 @@
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
 
@@ -59,13 +60,14 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/ventas" class="nav-link <?php echo pagina_actual('ventas') ? 'active':''?>"   style="<?php echo pagina_actual('ventas') ? 'background-color:white !important;':''?>">
+                <a href="/ventas" class="nav-link <?php echo $_SERVER['REQUEST_URI'] == "/ventas" ? 'active':''?>"   style="<?php echo  $_SERVER['REQUEST_URI'] == "/ventas"  ? 'background-color:white !important;':''?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Administrar Ventas</p>
                 </a>
               </li>
+              
               <li class="nav-item">
-                <a href="/reporte-ventas" class="nav-link">
+                <a href="/reporte-ventas" class="nav-link <?php echo $_SERVER['REQUEST_URI'] == "/reporte-ventas" ? 'active':''?>"   style="<?php echo  $_SERVER['REQUEST_URI'] == "/reporte-ventas"  ? 'background-color:white !important;':''?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Reporte de Ventas</p>
                 </a>

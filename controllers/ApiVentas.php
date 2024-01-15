@@ -311,7 +311,7 @@ class ApiVentas
 
             
        
-
+        
       
             $productos = json_decode($_POST['productosArray']);
             foreach ($productos as $producto) {
@@ -322,12 +322,14 @@ class ApiVentas
 
                 $datos = ['cantidad' => $producto->cantidad, 'precio' => $producto->precio, 'precio_factura'=> $producto->precio_venta, 'producto_id' => $producto->id, 'venta_id' => $id];
                 $productos_venta = new ProductosVenta($datos);
-
+               
+          
                 $productos_venta->guardar();
+                
             }
       
-            
-      
+       
+         
             if($venta_actual->metodo_pago ==2 ){
 
                 $numero_pago = 200000;
@@ -337,8 +339,7 @@ class ApiVentas
                 }
                
          
-             
-          
+              
                 $pago_cuotas_actual = PagoCuota::where('venta_id', $venta_actual->id);
                 $cuota_actual = Cuota::where('pago_cuotas_id',$pago_cuotas_actual->id);
           
@@ -352,16 +353,18 @@ class ApiVentas
            
            
             }
-          
+            
 
-            if($venta->metodo_pago == 2 || $venta->metodo_pago == 3){
+            if($venta->metodo_pago == 2){
                
-
+              
                 $pago_cuotas = new PagoCuota();
-
+            
                 $pago_cuotas->venta_id = $venta->id;
                 $pago_cuotas->cliente_id = $_POST['cliente_id'];
+                debuguear($pago_cuotas);
                 $resultado =$pago_cuotas->guardar();
+               
                 if($venta->recaudo !=0){
                     $cuota = new Cuota();
                     $cuota->monto = $venta->recaudo;
