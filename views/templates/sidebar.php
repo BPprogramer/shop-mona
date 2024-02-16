@@ -109,7 +109,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="/productos" class="nav-link <?php echo pagina_actual('/productos') ? 'active':''?>">
+            <a href="/productos" class="nav-link <?php echo $_SERVER['REQUEST_URI'] == "/productos" ? 'active':''?>">
             <i class="nav-icon fa-brands fa-product-hunt"></i>
               <p>
                 Productos
