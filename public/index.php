@@ -3,20 +3,21 @@
 require_once __DIR__ . '/../includes/app.php';
 
 use MVC\Router;
+use Controllers\ApiProductosVendidos;
 use Controllers\ApiCajas;
+use Model\ProductosVenta;
 use Controllers\ApiFiados;
 use Controllers\ApiInicio;
 use Controllers\ApiVentas;
 use Controllers\ApiEgresos;
 use Controllers\ApiClientes;
 use Controllers\ApiIngresos;
+use Controllers\ApiReportes;
 use Controllers\ApiUsuarios;
 use Controllers\ApiProductos;
 use Controllers\ApiCategorias;
-use Controllers\ApiMercadoLibre;
 use Controllers\ApiProveedores;
-use Controllers\ApiReportes;
-use Controllers\AvastesimientoController;
+use Controllers\ApiMercadoLibre;
 use Controllers\CajasController;
 use Controllers\FiadosController;
 use Controllers\VentasController;
@@ -27,9 +28,11 @@ use Controllers\UsuariosController;
 use Controllers\DashboardController;
 use Controllers\ProductosController;
 use Controllers\CategoriasController;
-use Controllers\MercadoLibreController;
 use Controllers\ProveedoresController;
+use Controllers\MercadoLibreController;
 use Controllers\TransaccionesController;
+use Controllers\AvastesimientoController;
+use Controllers\ProductosVentasController;
 
 $router = new Router();
 
@@ -54,6 +57,7 @@ $router->get('/ingresos',[IngresosController::class, 'index']);
 $router->get('/egresos',[EgresosController::class, 'index']);
 $router->get('/compras',[AvastesimientoController::class, 'index']);
 $router->get('/mercadolibre',[MercadoLibreController::class, 'index']);
+$router->get('/productos-ventas',[ProductosVentasController::class, 'index']);
 
 /* VENTAS CONTROLLERS */
 
@@ -105,6 +109,9 @@ $router->post('/api/proveedor/crear', [ApiProveedores::class, 'crear']);
 $router->post('/api/proveedor/editar', [ApiProveedores::class, 'editar']);
 $router->post('/api/proveedor/eliminar', [ApiProveedores::class, 'eliminar']);
 $router->get('/api/productos-proveedores', [ApiProveedores::class, 'proveedoresAll']);
+
+//
+$router->get('/api/productos-vendidos', [ApiProductosVendidos::class, 'productosVendidos']);
 
 // API productos
 $router->get('/api/productos', [ApiProductos::class, 'productos']);

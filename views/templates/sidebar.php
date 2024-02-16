@@ -72,6 +72,12 @@
                   <p>Reporte de Ventas</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="/productos-ventas" class="nav-link <?php echo $_SERVER['REQUEST_URI'] == "/productos-ventas" ? 'active':''?>"   style="<?php echo  $_SERVER['REQUEST_URI'] == "/productos-ventas"  ? 'background-color:white !important;':''?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Productos Vendidos</p>
+                </a>
+              </li>
               
             </ul>
           </li>

@@ -1,70 +1,105 @@
 (function(){
-    const compras = document.querySelector('#compras');
-    if(compras){
-        let tablaProductosVendidos;
-        const formularioStock = document.querySelector('#stockForm');
-        const nombre_producto = document.querySelector('#nombre_producto');
-        const nuevo_stock = document.querySelector('#nuevo_stock');
-        const precio_paquete_nuevo = document.querySelector('#precio_paquete_nuevo');
-        const unidades_input_nuevo = document.querySelector('#unidades_nuevo');
-        const precio_compra_nuevo = document.querySelector('#precio_compra_nuevo');
-        const btnSubmitNewStock = document.querySelector('#btnSubmitNewStock');
-        consultarProductos();
-
-        $('#tabla').on('click', '#agregar_stock', function(e){
-           
-            idProductoActualizarStock = e.currentTarget.dataset.productoId;
-            formularioStock.reset();
-            btnSubmitNewStock.disabled = false;
-            $('#modal-stock').modal('show');
-            $('#stockForm').validate().resetForm();
-            // Elimina todas las reglas de validación
-            $('#stockForm').validate().destroy();
-            // Elimina las clases de validación de los elementos
-            $('#stockForm').find('.is-invalid').removeClass('is-invalid');
-  
- 
-            const nombre = e.currentTarget.parentElement.parentElement.parentElement.childNodes[1].textContent;
-            nombre_producto.value = nombre;
-            inicializarValidadorStock();
-        })
-
-        precio_paquete_nuevo.addEventListener('input',function(e){
-            const precio_paquete = formatearValor(e.target.value);
-            precio_paquete_nuevo.value = precio_paquete;
-            calcularNuevoPrecioCompra();
-        })
-        unidades_input_nuevo.addEventListener('input',function(e){
-            
-            calcularNuevoPrecioCompra();
-        })
-
-        precio_compra_nuevo.addEventListener('input',function(e){
-            const precio_compra = formatearValor(e.target.value);
-            precio_compra_nuevo.value = precio_compra;
+    const productos_vendidos = document.querySelector('#productos-vendidos');
+    if(productos_vendidos){
         
-        })
+        let tablaProductosVendidos;
+        const input_fecha_inicial = document.querySelector('#fecha-inicial');
+        const input_fecha_final = document.querySelector('#fecha-final');
+
+        const fecha_actual = new Date();
 
 
+        let fecha_final = fecha_actual.getFullYear() + '-' + ('0' + (fecha_actual.getMonth() + 1)).slice(-2) + '-' + ('0' + fecha_actual.getDate()).slice(-2);
+        // Obtener la fecha actual restada un mes
+        fecha_actual.setMonth(fecha_actual.getMonth() - 1);
+        let  fecha_inicial = fecha_actual.getFullYear() + '-' + ('0' + (fecha_actual.getMonth() + 1)).slice(-2) + '-' + ('0' + fecha_actual.getDate()).slice(-2);
 
+
+        cargarInputs();
+        document.addEventListener("DOMContentLoaded", function() {
+
+
+            input_fecha_inicial.addEventListener('change',function(){
+                fecha_final = input_fecha_final.value;
+                fecha_inicial = input_fecha_inicial.value;
+                consultarProductosVendidos()
+            })
+            input_fecha_final.addEventListener('change',function(){
+                fecha_final = input_fecha_final.value;
+                fecha_inicial = input_fecha_inicial.value;
+                consultarProductosVendidos()
+            })
+
+            // consultarProductosVendidos();
+           
+        });
+
+        function cargarInputs(){
+            input_fecha_inicial.value = fecha_inicial
+            input_fecha_final.value = fecha_final
+            consultarProductosVendidos()
+
+        }
+        
        
-        function consultarProductos(){
- 
-            $("#tabla").dataTable().fnDestroy(); //por si me da error de reinicializar
+
     
-            tablaCompras = $('#tabla').DataTable({
-                ajax: '/api/compras',
-                "deferRender":true,
-                "retrieve":true,
-                "proccesing":true,
-                responsive:true,
-                initComplete: function () {
-                    // Inicializa los botones después de que la tabla se haya creado
-                    var buttons = new $.fn.dataTable.Buttons(tablaCompras, {
-                        buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
-                    }).container().appendTo('#tabla_wrapper .col-md-6:eq(0)');
-                }
-            });
+       
+        function consultarProductosVendidos(){
+ 
+            
+            const fechaObjeto_1 = new Date(fecha_inicial);
+            const fechaObjeto_2 = new Date(fecha_final);
+            
+            if (fechaObjeto_1 >= fechaObjeto_2) {
+                Swal.fire({
+                    icon:'error',
+                    title: "Error",
+                    text: "La fecha inicial debe ser menor que la fecha final",
+                    
+                  });
+                  return;
+            }else{
+                const datos = new FormData();
+                datos.append("fecha_inicial", fecha_inicial);
+                datos.append("fecha_final", fecha_final);
+
+                $("#tabla").dataTable().fnDestroy(); //por si me da error de reinicializar
+    
+                tablaProductosVendidos = $('#tabla').DataTable({
+                    ajax: `${location.origin}/api/productos-vendidos?fecha-inicial=${fecha_inicial}&fecha-final=${fecha_final}`,
+                    "deferRender":true,
+                    "retrieve":true,
+                    "proccesing":true,
+                    responsive:true,
+                    initComplete: function () {
+                        // Inicializa los botones después de que la tabla se haya creado
+                        var buttons = new $.fn.dataTable.Buttons(tablaProductosVendidos, {
+                            buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                        }).container().appendTo('#tabla_wrapper .col-md-6:eq(0)');
+                    }
+                });
+                $.ajax({
+              
+                    url: `${location.origin}/api/productos-vendidos?fecha-inicial=${fecha_inicial}&fecha-final=${fecha_final}`,
+                
+                    dataType:'json',
+                    success: function(req){
+                        console.log(req)
+                
+                    },
+                    error:function(error){
+                        console.log(error.resposeText)
+                    }
+        
+                })
+        
+       
+               
+            }
+
+          
+       
             
        
        
