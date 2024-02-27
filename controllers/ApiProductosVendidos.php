@@ -33,6 +33,29 @@ class ApiProductosVendidos
             }
         }
 
+        // $arreglo_final = [];
+
+        // foreach($productos_vendidos as $key=>$value){
+        //     if(!empty($arreglo_final)){
+
+        //         $existe = true;
+        //         foreach($arreglo_final as $producto_existe){
+        //             if($producto_existe->producto_id == $value->producto_id){
+        //                 $arreglo_final[$key]->cantidad = $arreglo_final[$key]->cantidad + $value->cantidad;
+        //                 $existe = false;
+        //             }
+        //         }
+
+        //         if($existe == true){
+        //             $arreglo_final[$key] = $value;
+        //         }
+        //     }else{
+        //         $arreglo_final[] = $value;
+        //     }
+        // }
+
+        // debuguear($arreglo_final);
+
 
         $i = 0;
         $datoJson = '{
