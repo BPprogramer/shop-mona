@@ -10,7 +10,7 @@ class ApiEgresos{
 
     public static function egresos(){
         $egresos = Egreso::all();
-      
+     
 
         $i=0;
         $datoJson = '{
@@ -20,7 +20,7 @@ class ApiEgresos{
                 $caja = Caja::where('id', $egreso->caja_id);
                 $i++;
 
-                $acciones = "<div class='d-flex justify-content-center' >";
+                     $acciones = "<div class='d-flex justify-content-center' >";
                
                 if($egreso->estado==1 && $caja->estado == 0){
                     $acciones .="<button data-egreso-id ='".$egreso->id."' id='editar'  type='button' class='btn btn-sm bg-hover-azul mx-2 text-white toolMio'><span class='toolMio-text'>Editar</span><i class='fas fa-pen'></i></button>";
@@ -54,10 +54,10 @@ class ApiEgresos{
              
                          "'.number_format($egreso->egreso).'",
                       
-                         "'.$egreso->descripcion.'", 
-                         "'.$estado.'",
+                         "'.$egreso->fecha.'", 
+                           "'.$egreso->descripcion.'", 
  
-                         "'.$acciones.'"
+                             "'.$acciones.'"
                  ]';
                  if($key != count($egresos)-1){
                      $datoJson.=",";
@@ -65,7 +65,9 @@ class ApiEgresos{
              }
    
          $datoJson.=  ']}';
-        echo $datoJson;
+          echo $datoJson;
+          return;
+       
         
     }
     public static function egreso(){
